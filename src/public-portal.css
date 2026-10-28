@@ -104,23 +104,64 @@
 @media(max-width:1000px){.rr-registration-layout{grid-template-columns:.75fr 1.25fr;gap:28px}.rr-home-map{height:310px}}
 @media(max-width:720px){.rr-registration-layout{grid-template-columns:1fr;gap:20px;margin-top:20px}.rr-registration-layout .rr-access-aside{position:static;padding-top:0}.rr-registration-layout .rr-access-aside h1{font-size:30px}.rr-stepper-item>small{font-size:9px}.rr-stepper-item:not(:last-child)::after{left:calc(50% + 18px);width:calc(100% - 22px)}.rr-wizard-page{min-height:0}.rr-wizard-actions .rr-submit{min-width:0;flex:1}.rr-service-option{padding:11px;gap:10px}.rr-service-option-icon{width:37px;height:37px;flex-basis:37px}.rr-home-map{height:290px}.rr-hero-subpage{grid-template-columns:1fr;padding-top:35px;padding-bottom:42px}}
 
-/* Registration is a focused, single-column flow with the form as the page's main element. */
-.rr-registration-layout{width:min(900px,calc(100% - 40px));margin:34px auto 44px;display:flex;justify-content:center;align-items:flex-start;gap:0}
-.rr-registration-layout .rr-access-card{max-width:900px;width:100%;padding:clamp(24px,4vw,42px);border-radius:16px;box-shadow:0 24px 70px rgba(20,36,58,.10)}
-.rr-registration-layout .rr-card-heading{margin-bottom:28px}
-.rr-registration-layout .rr-card-heading h2{font-size:24px}
-.rr-registration-layout .rr-card-heading p{font-size:12px}
-.rr-registration-layout .rr-access-form{gap:18px}
-.rr-registration-layout .rr-access-form>label{font-size:12px}
-.rr-registration-layout .rr-access-form input,.rr-registration-layout .rr-access-form select{height:48px;font-size:13px;border-radius:8px}
-.rr-registration-layout .rr-input-wrap{height:49px}
-.rr-registration-layout .rr-input-wrap input{height:45px}
-.rr-registration-layout .rr-wizard-page{min-height:300px}
-.rr-registration-layout .rr-wizard-intro h3{font-size:20px}
-.rr-registration-layout .rr-wizard-intro p{font-size:13px;line-height:1.7}
-.rr-registration-layout .rr-service-option{padding:17px}
-.rr-registration-layout .rr-service-option strong{font-size:13px}
-.rr-registration-layout .rr-service-option small{font-size:11px}
-.rr-registration-layout .rr-wizard-actions .rr-button{min-height:48px;font-size:13px}
-.rr-registration-layout .rr-privacy-note{font-size:10px}
-@media(max-width:720px){.rr-registration-layout{width:calc(100% - 24px);margin:20px auto 28px}.rr-registration-layout .rr-access-card{padding:22px 17px}.rr-registration-layout .rr-wizard-page{min-height:0}.rr-registration-layout .rr-card-heading h2{font-size:20px}}
+/* Public pages: distinct page layouts, consistent RedResponse visual language */
+.rr-public{background:#fff;color:#202938}
+.rr-wordmark>span:last-child>span{color:#c62828}
+.rr-wordmark small{display:none}
+.rr-mark{background:linear-gradient(145deg,#d83a3a,#a91e25);box-shadow:0 5px 13px #c628282b}
+.rr-public-nav nav button{padding:10px 0;border-bottom:2px solid transparent;color:#5f6877}
+.rr-public-nav nav button:hover,.rr-public-nav nav button.is-active{color:#b4232a}
+.rr-public-nav nav button.is-active{border-bottom-color:#c62828}
+.rr-button-primary{background:#c62828;box-shadow:0 7px 17px #c628281c}
+.rr-button-primary:hover{background:#a91e25}
+.rr-button-light{color:#a91e25}
+.rr-eyebrow{color:#9d3035}
+.rr-eyebrow>span{background:#c62828;box-shadow:0 0 0 4px #fee2e2}
+.rr-home-hero{max-width:1320px;margin:0 auto;padding:70px 34px 76px;display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:56px;align-items:center}
+.rr-home-copy h1,.rr-page-hero h1,.rr-impact-hero h1{font:750 clamp(38px,4.1vw,58px)/1.09 Inter,system-ui,sans-serif;letter-spacing:-2.7px;color:#202938;margin:22px 0 20px;max-width:700px}
+.rr-home-copy h1 em{font-style:normal;color:#c62828}
+.rr-home-copy>p,.rr-page-hero>p,.rr-impact-hero>p{font-size:15px;line-height:1.85;color:#606b7b;max-width:610px;margin:0}
+.rr-home-assurances{display:flex;flex-wrap:wrap;gap:17px;margin-top:25px;color:#697586;font-size:11px}
+.rr-home-assurances span{display:flex;align-items:center;gap:7px}.rr-home-assurances svg{color:#c62828}
+.rr-home-map-panel{min-width:0;padding:15px;border:1px solid #e4e7ec;border-radius:17px;background:#fff;box-shadow:0 24px 60px #20293812}
+.rr-home-map-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:2px 2px 12px;color:#7b8492;font-size:9px;font-weight:800;letter-spacing:1px}
+.rr-home-map-heading>div{display:flex;align-items:center;gap:8px;color:#344054}.rr-map-heading-dot{width:7px;height:7px;border-radius:50%;background:#c62828}
+.rr-home-map-shell{position:relative;margin:0;border:1px solid #e1e5ea;border-radius:12px;overflow:hidden;background:#e8ecef}
+.rr-home-map{height:390px;width:100%;z-index:0;background:#e8ecef}
+.rr-home-map .leaflet-tile{filter:saturate(.85) contrast(.99)}
+.rr-home-map .leaflet-control-attribution{font-size:8px;background:#ffffffd9}
+.rr-home-map .leaflet-control-zoom a{color:#273444;border-color:#e5e7eb}
+.rr-leaflet-marker-wrap{background:transparent;border:0}
+.rr-leaflet-marker{width:24px;height:24px;border:3px solid #fff;border-radius:50%;background:var(--marker-colour);display:grid;place-items:center;box-shadow:0 2px 8px #11182750}
+.rr-leaflet-marker span{width:5px;height:5px;background:#fff;border-radius:50%}
+.rr-home-map .leaflet-popup-content-wrapper{border-radius:8px}.rr-home-map .leaflet-popup-content{font-family:Inter,system-ui,sans-serif;font-size:12px;line-height:1.6}.rr-home-map .leaflet-popup-content span{color:#667085;font-size:10px}
+.rr-page-section{max-width:1320px;margin:0 auto;padding:54px 34px 62px;border-top:1px solid #eceff3}
+.rr-section-kicker{font-size:10px;font-weight:800;letter-spacing:1.7px;color:#b4232a}
+.rr-home-intro h2,.rr-how-records h2,.rr-impact-measure h2{font:750 clamp(27px,3vw,38px)/1.2 Inter,system-ui,sans-serif;letter-spacing:-1.1px;color:#202938;margin:13px 0 13px}
+.rr-home-intro>p{max-width:760px;color:#667085;font-size:14px;line-height:1.8;margin:0}
+.rr-text-link{display:inline-flex;align-items:center;gap:9px;margin-top:22px;border:0;background:none;padding:0;color:#b4232a;font-weight:750;font-size:13px}
+.rr-home-feature-strip{max-width:1252px;margin:0 auto 72px;padding:0 0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid #e7e9ee;border-radius:14px;overflow:hidden}
+.rr-home-feature-strip article{padding:26px 28px;border-right:1px solid #e7e9ee}.rr-home-feature-strip article:last-child{border-right:0}.rr-home-feature-strip svg{color:#c62828;width:22px;height:22px}.rr-home-feature-strip h3{font-size:16px;margin:16px 0 8px;color:#263244}.rr-home-feature-strip p{font-size:12px;line-height:1.75;color:#667085;margin:0}
+.rr-inner-page{max-width:1320px;margin:0 auto;padding:0 34px 76px}
+.rr-page-hero{padding:67px 0 48px;max-width:900px}
+.rr-page-hero h1{max-width:850px;margin-top:17px}
+.rr-process-list{border-top:1px solid #e5e7eb}
+.rr-process-step{display:grid;grid-template-columns:56px 54px minmax(0,1fr);gap:22px;align-items:start;padding:27px 0;border-bottom:1px solid #e5e7eb;max-width:1020px}
+.rr-process-number{font-size:12px;font-weight:800;letter-spacing:1px;color:#b4232a;padding-top:5px}
+.rr-process-icon,.rr-service-detail-icon,.rr-impact-icon{width:46px;height:46px;display:grid;place-items:center;border-radius:12px;background:#fff0ef;color:#b4232a}
+.rr-process-copy h2,.rr-service-detail h2,.rr-contact-aside h2{font-size:19px;letter-spacing:-.35px;color:#263244;margin:1px 0 9px}
+.rr-process-copy p,.rr-service-detail-main>p,.rr-contact-aside p{font-size:13px;line-height:1.8;color:#667085;margin:0;max-width:760px}
+.rr-how-records{margin:54px 0 42px;padding:30px;background:#f8f9fb;border:1px solid #e8ebf0;border-radius:14px;display:grid;grid-template-columns:1.2fr .8fr;gap:36px;align-items:center}
+.rr-how-records p,.rr-impact-measure p{font-size:13px;line-height:1.85;color:#667085;margin:0;max-width:760px}
+.rr-how-points{display:grid;gap:15px}.rr-how-points span{display:flex;align-items:center;gap:10px;font-size:12px;font-weight:650;color:#475467}.rr-how-points svg{color:#c62828;width:18px;height:18px;flex-shrink:0}
+.rr-page-cta{display:flex;align-items:center;justify-content:space-between;gap:25px;padding:28px 0 0;border-top:1px solid #e5e7eb}.rr-page-cta h2{font-size:22px;margin:0 0 7px;color:#263244}.rr-page-cta p{font-size:12px;color:#667085;margin:0}
+.rr-service-list{border-top:1px solid #e5e7eb}.rr-service-detail{display:grid;grid-template-columns:48px minmax(0,1fr) auto;gap:20px;align-items:start;padding:26px 0;border-bottom:1px solid #e5e7eb}.rr-service-detail-icon{background:#fff0ef;color:#b4232a}.rr-service-detail h2{margin-top:0}.rr-service-tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}.rr-service-tags span{padding:6px 9px;background:#f7f8fa;border:1px solid #e7e9ee;border-radius:6px;color:#596579;font-size:10px;font-weight:600}.rr-service-register{display:inline-flex;align-items:center;gap:8px;border:0;background:none;color:#b4232a;font-size:11px;font-weight:800;white-space:nowrap;padding:6px 0}.rr-service-boundary{display:flex;gap:16px;margin-top:40px;padding:24px;border:1px solid #f1cccc;border-radius:12px;background:#fffafa;color:#b4232a}.rr-service-boundary>svg{flex-shrink:0}.rr-service-boundary h2{font-size:16px;color:#263244;margin:0 0 8px}.rr-service-boundary p{font-size:12px;line-height:1.8;color:#667085;margin:0;max-width:850px}
+.rr-impact-hero{padding:67px 0 42px;max-width:950px}.rr-impact-hero h1{max-width:900px}.rr-impact-note{margin-top:23px;padding:14px 17px;border-left:3px solid #c62828;background:#fff7f7;color:#6b4b4d;font-size:12px;line-height:1.7;max-width:820px}
+.rr-impact-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}.rr-impact-grid article{position:relative;min-height:210px;padding:25px;border:1px solid #e5e7eb;border-radius:12px;background:#fff}.rr-impact-index{position:absolute;right:24px;top:25px;font-size:11px;font-weight:800;letter-spacing:1px;color:#c5cbd3}.rr-impact-icon{margin-bottom:19px}.rr-impact-grid h2{font-size:17px;color:#263244;margin:0 0 9px}.rr-impact-grid p{font-size:12px;line-height:1.8;color:#667085;margin:0;max-width:520px}
+.rr-impact-measure{margin-top:48px;padding:30px;background:#f8f9fb;border:1px solid #e8ebf0;border-radius:14px;display:flex;align-items:center;justify-content:space-between;gap:32px}.rr-impact-measure h2{font-size:28px}.rr-impact-measure p{max-width:770px}
+.rr-contact-layout{display:grid;grid-template-columns:.8fr 1.2fr;gap:56px;align-items:start;padding-bottom:20px}.rr-contact-aside{display:grid;gap:23px}.rr-contact-aside article{padding:0 0 22px;border-bottom:1px solid #e7e9ee}.rr-contact-aside article>span{display:grid;place-items:center;width:40px;height:40px;margin-bottom:13px;background:#fff0ef;border-radius:10px;color:#b4232a}.rr-contact-aside h2{font-size:15px;margin-bottom:6px}.rr-contact-aside p{font-size:12px}.rr-contact-form-page{padding:28px;background:#fff;border:1px solid #e5e7eb;border-radius:14px;box-shadow:0 16px 40px #2029380a}.rr-contact-form-page>h2{font-size:22px;color:#263244;margin:0 0 7px}.rr-contact-form-page>p{font-size:12px;color:#667085;margin:0 0 22px}.rr-contact-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.rr-contact-fields label{display:flex;flex-direction:column;gap:7px;color:#344054;font-size:11px;font-weight:750}.rr-contact-wide{grid-column:1/-1}.rr-contact-fields input,.rr-contact-fields select,.rr-contact-fields textarea{width:100%;min-height:43px;padding:10px 12px;border:1px solid #d0d5dd;border-radius:7px;background:#fff;color:#263244;font:400 13px Inter,system-ui,sans-serif;outline:none}.rr-contact-fields textarea{resize:vertical}.rr-contact-fields input:focus,.rr-contact-fields select:focus,.rr-contact-fields textarea:focus{border-color:#c62828;box-shadow:0 0 0 3px #fee2e280}.rr-contact-form-page>.rr-button{margin-top:18px}.rr-contact-privacy{display:block;margin-top:13px;font-size:10px;line-height:1.6;color:#7b8492}
+.rr-public-footer .rr-wordmark small{display:none}.rr-public-footer>div button:hover{color:#b4232a}
+.rr-orange,.rr-blue,.rr-navy,.rr-green,.rr-service-orange,.rr-service-blue,.rr-service-navy,.rr-service-green,.rr-dept-icon,.rr-service-option-icon{background:#fff0ef!important;color:#b4232a!important}
+.rr-service-radio{color:#fff}.rr-service-option.is-selected .rr-service-radio{background:#c62828;border-color:#c62828}
+@media(max-width:1000px){.rr-home-hero{grid-template-columns:1fr;gap:34px;padding-top:48px}.rr-home-copy{max-width:800px}.rr-home-map{height:350px}.rr-home-feature-strip{margin-left:24px;margin-right:24px}.rr-service-detail{grid-template-columns:48px minmax(0,1fr)}.rr-service-register{grid-column:2}.rr-contact-layout{gap:30px}}
+@media(max-width:720px){.rr-public-nav{padding:15px 18px}.rr-public-nav nav{gap:12px;overflow-x:auto}.rr-public-nav nav button{white-space:nowrap;font-size:10px}.rr-home-hero{padding:38px 18px 42px}.rr-home-copy h1,.rr-page-hero h1,.rr-impact-hero h1{font-size:39px;letter-spacing:-1.8px}.rr-home-copy>p,.rr-page-hero>p,.rr-impact-hero>p{font-size:13px}.rr-home-map-panel{padding:10px}.rr-home-map-heading{font-size:7px}.rr-home-map{height:290px}.rr-page-section{padding:38px 18px 44px}.rr-home-feature-strip{grid-template-columns:1fr;margin:0 18px 40px}.rr-home-feature-strip article{border-right:0;border-bottom:1px solid #e7e9ee;padding:21px}.rr-home-feature-strip article:last-child{border-bottom:0}.rr-inner-page{padding:0 18px 48px}.rr-page-hero,.rr-impact-hero{padding:43px 0 32px}.rr-process-step{grid-template-columns:32px 42px minmax(0,1fr);gap:11px;padding:21px 0}.rr-process-icon,.rr-service-detail-icon{width:40px;height:40px}.rr-process-copy h2,.rr-service-detail h2{font-size:16px}.rr-process-copy p,.rr-service-detail-main>p{font-size:12px}.rr-how-records{grid-template-columns:1fr;padding:22px;margin-top:35px}.rr-page-cta,.rr-impact-measure{align-items:stretch;flex-direction:column}.rr-service-detail{grid-template-columns:40px minmax(0,1fr);gap:13px}.rr-service-tags span{font-size:9px}.rr-service-register{grid-column:2;justify-self:start}.rr-impact-grid{grid-template-columns:1fr}.rr-impact-grid article{min-height:0;padding:22px}.rr-impact-measure{padding:22px;margin-top:32px}.rr-contact-layout{grid-template-columns:1fr;gap:28px}.rr-contact-form-page{padding:21px 17px}.rr-contact-fields{grid-template-columns:1fr}.rr-contact-wide{grid-column:auto}.rr-public-footer{gap:15px}.rr-public-footer>div{gap:12px;flex-wrap:wrap}.rr-public-footer>div button{font-size:9px}}

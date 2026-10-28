@@ -37,7 +37,7 @@ export default function RootApp() {
     return()=>{alive=false;subscription.unsubscribe();};
   },[]);
 
-  if (path==='/' || path==='/platform' || path==='/services' || path==='/contact') return <PublicPortal/>;
+  if (['/','/platform','/services','/contact','/how-it-works','/impact'].includes(path)) return <PublicPortal/>;
   if (path==='/register' || /^\/register\/step-[1-3]$/.test(path)) return <AccessPortal mode="register"/>;
   if (path==='/login') return <AccessPortal mode="login"/>;
   if (path==='/app' || path.startsWith('/app/') || ['/overview','/incidents','/dispatch','/map','/units','/reports','/settings'].includes(path)) {
