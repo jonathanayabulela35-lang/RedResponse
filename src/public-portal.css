@@ -103,3 +103,24 @@
 .rr-home-eyebrow{color:#6b7280}
 @media(max-width:1000px){.rr-registration-layout{grid-template-columns:.75fr 1.25fr;gap:28px}.rr-home-map{height:310px}}
 @media(max-width:720px){.rr-registration-layout{grid-template-columns:1fr;gap:20px;margin-top:20px}.rr-registration-layout .rr-access-aside{position:static;padding-top:0}.rr-registration-layout .rr-access-aside h1{font-size:30px}.rr-stepper-item>small{font-size:9px}.rr-stepper-item:not(:last-child)::after{left:calc(50% + 18px);width:calc(100% - 22px)}.rr-wizard-page{min-height:0}.rr-wizard-actions .rr-submit{min-width:0;flex:1}.rr-service-option{padding:11px;gap:10px}.rr-service-option-icon{width:37px;height:37px;flex-basis:37px}.rr-home-map{height:290px}.rr-hero-subpage{grid-template-columns:1fr;padding-top:35px;padding-bottom:42px}}
+
+/* Registration is a focused, single-column flow with the form as the page's main element. */
+.rr-registration-layout{width:min(900px,calc(100% - 40px));margin:34px auto 44px;display:flex;justify-content:center;align-items:flex-start;gap:0}
+.rr-registration-layout .rr-access-card{max-width:900px;width:100%;padding:clamp(24px,4vw,42px);border-radius:16px;box-shadow:0 24px 70px rgba(20,36,58,.10)}
+.rr-registration-layout .rr-card-heading{margin-bottom:28px}
+.rr-registration-layout .rr-card-heading h2{font-size:24px}
+.rr-registration-layout .rr-card-heading p{font-size:12px}
+.rr-registration-layout .rr-access-form{gap:18px}
+.rr-registration-layout .rr-access-form>label{font-size:12px}
+.rr-registration-layout .rr-access-form input,.rr-registration-layout .rr-access-form select{height:48px;font-size:13px;border-radius:8px}
+.rr-registration-layout .rr-input-wrap{height:49px}
+.rr-registration-layout .rr-input-wrap input{height:45px}
+.rr-registration-layout .rr-wizard-page{min-height:300px}
+.rr-registration-layout .rr-wizard-intro h3{font-size:20px}
+.rr-registration-layout .rr-wizard-intro p{font-size:13px;line-height:1.7}
+.rr-registration-layout .rr-service-option{padding:17px}
+.rr-registration-layout .rr-service-option strong{font-size:13px}
+.rr-registration-layout .rr-service-option small{font-size:11px}
+.rr-registration-layout .rr-wizard-actions .rr-button{min-height:48px;font-size:13px}
+.rr-registration-layout .rr-privacy-note{font-size:10px}
+@media(max-width:720px){.rr-registration-layout{width:calc(100% - 24px);margin:20px auto 28px}.rr-registration-layout .rr-access-card{padding:22px 17px}.rr-registration-layout .rr-wizard-page{min-height:0}.rr-registration-layout .rr-card-heading h2{font-size:20px}}
