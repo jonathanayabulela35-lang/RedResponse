@@ -6,7 +6,6 @@ export default function HomePage({ navigate }) {
   return <>
     <section className="rr-home-hero">
       <div className="rr-home-copy">
-        <div className="rr-eyebrow"><span /> PURPOSE BUILT FOR RESPONSE ORGANISATIONS</div>
         <h1>When every moment matters, <em>clarity matters too.</em></h1>
         <p>RedResponse gives emergency response organisations a dedicated place to record incidents, organise response units and keep operational information clear as situations develop.</p>
         <div className="rr-hero-actions"><button className="rr-button rr-button-primary" onClick={() => navigate('/register')}>Register your organisation <ArrowRight size={17}/></button><button className="rr-button rr-button-outline" onClick={() => navigate('/how-it-works')}>See how it works</button></div>

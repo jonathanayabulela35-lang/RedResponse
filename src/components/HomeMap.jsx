@@ -3,9 +3,8 @@ import React, { useEffect, useRef } from 'react';
 const LEAFLET_CSS = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
 const LEAFLET_JS = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
 const responsePoints = [
-  { point: [-26.195, 28.035], label: 'Medical response', detail: 'Illustrative response point' },
-  { point: [-26.178, 28.055], label: 'Fire and rescue', detail: 'Illustrative station' },
-  { point: [-26.207, 28.018], label: 'Road response', detail: 'Illustrative response point' },
+  { point: [-26.195, 28.035], label: 'Response origin', detail: 'Illustrative starting point', colour: '#c62828' },
+  { point: [-26.178, 28.055], label: 'Response destination', detail: 'Illustrative destination', colour: '#263746' },
 ];
 
 function loadLeaflet() {
@@ -45,8 +44,10 @@ export default function HomeMap() {
         maxZoom: 19,
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OpenStreetMap</a> contributors',
       }).addTo(map);
-      const markerIcon = L.divIcon({ className: 'rr-leaflet-marker-wrap', html: '<span class="rr-leaflet-marker" style="--marker-colour:#c62828"><span></span></span>', iconSize: [24, 24], iconAnchor: [12, 12] });
-      responsePoints.forEach((item) => L.marker(item.point, { icon: markerIcon }).bindPopup(`<strong>${item.label}</strong><br/><span>${item.detail}</span>`).addTo(map));
+      responsePoints.forEach((item) => {
+        const markerIcon = L.divIcon({ className: 'rr-leaflet-marker-wrap', html: `<span class="rr-leaflet-marker" style="--marker-colour:${item.colour}"><span></span></span>`, iconSize: [24, 24], iconAnchor: [12, 12] });
+        L.marker(item.point, { icon: markerIcon }).bindPopup(`<strong>${item.label}</strong><br/><span>${item.detail}</span>`).addTo(map);
+      });
       const [origin, destination] = [responsePoints[0].point, responsePoints[1].point];
       const coordinates = `${origin[1]},${origin[0]};${destination[1]},${destination[0]}`;
       routeController = new AbortController();

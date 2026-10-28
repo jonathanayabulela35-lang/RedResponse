@@ -165,3 +165,67 @@
 .rr-service-radio{color:#fff}.rr-service-option.is-selected .rr-service-radio{background:#c62828;border-color:#c62828}
 @media(max-width:1000px){.rr-home-hero{grid-template-columns:1fr;gap:34px;padding-top:48px}.rr-home-copy{max-width:800px}.rr-home-map{height:350px}.rr-home-feature-strip{margin-left:24px;margin-right:24px}.rr-service-detail{grid-template-columns:48px minmax(0,1fr)}.rr-service-register{grid-column:2}.rr-contact-layout{gap:30px}}
 @media(max-width:720px){.rr-public-nav{padding:15px 18px}.rr-public-nav nav{gap:12px;overflow-x:auto}.rr-public-nav nav button{white-space:nowrap;font-size:10px}.rr-home-hero{padding:38px 18px 42px}.rr-home-copy h1,.rr-page-hero h1,.rr-impact-hero h1{font-size:39px;letter-spacing:-1.8px}.rr-home-copy>p,.rr-page-hero>p,.rr-impact-hero>p{font-size:13px}.rr-home-map-panel{padding:10px}.rr-home-map-heading{font-size:7px}.rr-home-map{height:290px}.rr-page-section{padding:38px 18px 44px}.rr-home-feature-strip{grid-template-columns:1fr;margin:0 18px 40px}.rr-home-feature-strip article{border-right:0;border-bottom:1px solid #e7e9ee;padding:21px}.rr-home-feature-strip article:last-child{border-bottom:0}.rr-inner-page{padding:0 18px 48px}.rr-page-hero,.rr-impact-hero{padding:43px 0 32px}.rr-process-step{grid-template-columns:32px 42px minmax(0,1fr);gap:11px;padding:21px 0}.rr-process-icon,.rr-service-detail-icon{width:40px;height:40px}.rr-process-copy h2,.rr-service-detail h2{font-size:16px}.rr-process-copy p,.rr-service-detail-main>p{font-size:12px}.rr-how-records{grid-template-columns:1fr;padding:22px;margin-top:35px}.rr-page-cta,.rr-impact-measure{align-items:stretch;flex-direction:column}.rr-service-detail{grid-template-columns:40px minmax(0,1fr);gap:13px}.rr-service-tags span{font-size:9px}.rr-service-register{grid-column:2;justify-self:start}.rr-impact-grid{grid-template-columns:1fr}.rr-impact-grid article{min-height:0;padding:22px}.rr-impact-measure{padding:22px;margin-top:32px}.rr-contact-layout{grid-template-columns:1fr;gap:28px}.rr-contact-form-page{padding:21px 17px}.rr-contact-fields{grid-template-columns:1fr}.rr-contact-wide{grid-column:auto}.rr-public-footer{gap:15px}.rr-public-footer>div{gap:12px;flex-wrap:wrap}.rr-public-footer>div button{font-size:9px}}
+
+
+/* Refinement: clearer public page sections and a spacious, centred onboarding card */
+.rr-registration-layout{
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+  width:min(1000px,calc(100% - 48px));
+  margin:clamp(24px,4vh,48px) auto 64px;
+  padding:0;
+}
+.rr-registration-layout>.rr-access-card{
+  width:100%;
+  max-width:none;
+  padding:clamp(26px,4vw,44px);
+  border-color:#e4e7ec;
+  border-radius:18px;
+  box-shadow:0 24px 70px rgba(32,41,56,.09);
+}
+.rr-registration-layout .rr-card-heading{padding-bottom:20px;margin-bottom:24px;border-bottom:1px solid #eceff3}
+.rr-registration-layout .rr-card-heading h2{font-size:clamp(22px,2.5vw,28px)}
+.rr-registration-layout .rr-card-heading p{font-size:12px}
+.rr-registration-layout .rr-wizard-page{min-height:0;gap:22px}
+.rr-registration-layout .rr-wizard-intro h3{font-size:clamp(20px,2vw,24px)}
+.rr-registration-layout .rr-wizard-intro p{max-width:720px;font-size:14px}
+.rr-registration-layout .rr-service-options{grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.rr-registration-layout .rr-service-option{min-height:100px;padding:17px}
+.rr-registration-layout .rr-stepper{margin-bottom:28px;padding-bottom:22px}
+.rr-registration-layout .rr-access-form{gap:19px}
+.rr-registration-layout .rr-access-form>label,.rr-registration-layout .rr-form-two label{font-size:12px}
+.rr-registration-layout .rr-access-form input,.rr-registration-layout .rr-access-form select{height:48px;font-size:13px}
+.rr-registration-layout .rr-wizard-actions{padding-top:18px;margin-top:5px;border-top:1px solid #eceff3}
+.rr-registration-layout .rr-wizard-actions .rr-submit{min-width:210px}
+
+/* Public pages use distinct, clearly separated content sections. */
+.rr-public-main section{scroll-margin-top:24px}
+.rr-public-main .rr-section-kicker{font-size:10px;font-weight:800;letter-spacing:1.25px;color:#b4232a}
+.rr-home-intro{padding-top:62px;padding-bottom:62px}
+.rr-home-feature-strip{margin-bottom:72px;box-shadow:0 12px 32px rgba(32,41,56,.035)}
+.rr-home-feature-strip article{background:#fff}
+.rr-inner-page>.rr-page-hero,.rr-inner-page>.rr-impact-hero{padding:58px 0 46px;margin-bottom:0;border-bottom:1px solid #e7e9ee}
+.rr-inner-page>.rr-process-list,.rr-inner-page>.rr-service-list,.rr-inner-page>.rr-impact-grid,.rr-inner-page>.rr-contact-layout{padding-top:34px;padding-bottom:44px}
+.rr-process-step{border-bottom:1px solid #e7e9ee}
+.rr-process-step:last-child{border-bottom:0}
+.rr-how-records,.rr-service-boundary,.rr-impact-measure{border-radius:16px;border:1px solid #e7e9ee;background:#f8f9fb}
+.rr-how-records{margin-top:16px;margin-bottom:36px;padding:32px}
+.rr-service-detail{padding:25px 0;border-bottom:1px solid #e7e9ee}
+.rr-service-detail:last-child{border-bottom:0}
+.rr-service-boundary{margin:10px 0 48px;padding:25px}
+.rr-impact-grid{gap:16px}
+.rr-impact-grid article{border-color:#e1e5eb;box-shadow:0 10px 28px rgba(32,41,56,.035)}
+.rr-impact-measure{margin-top:20px;margin-bottom:44px;padding:32px}
+.rr-contact-layout{border-top:1px solid #e7e9ee;margin-top:0}
+.rr-contact-form-page{box-shadow:0 18px 45px rgba(32,41,56,.055)}
+@media(max-width:720px){
+  .rr-registration-layout{width:calc(100% - 28px);margin:20px auto 38px}
+  .rr-registration-layout>.rr-access-card{padding:24px 18px}
+  .rr-registration-layout .rr-service-options{grid-template-columns:1fr}
+  .rr-registration-layout .rr-service-option{min-height:84px;padding:13px}
+  .rr-registration-layout .rr-wizard-actions .rr-submit{min-width:0}
+  .rr-inner-page>.rr-page-hero,.rr-inner-page>.rr-impact-hero{padding:40px 0 30px}
+  .rr-inner-page>.rr-process-list,.rr-inner-page>.rr-service-list,.rr-inner-page>.rr-impact-grid,.rr-inner-page>.rr-contact-layout{padding-top:22px;padding-bottom:30px}
+  .rr-how-records,.rr-service-boundary,.rr-impact-measure{padding:22px}
+}
