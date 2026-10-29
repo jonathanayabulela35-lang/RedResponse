@@ -118,12 +118,41 @@ export default function LiveMapPage({ incidents = [], units = [], setSelected, g
     const fullAddress = [streetAddress.trim(), block.trim() ? `Block ${block.trim()}` : '', floor.trim() ? `Floor ${floor.trim()}` : '', unitNumber.trim() ? `Unit ${unitNumber.trim()}` : ''].filter(Boolean).join(', ');
     setSaving(true);
     try {
-      const query = `${fullAddress}, South Africa`;
-      const geoResponse = await fetch(`https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&countrycodes=za&q=${encodeURIComponent(query)}`, { headers: { Accept: 'application/json' } });
-      if (!geoResponse.ok) throw new Error('The address lookup service is unavailable. Please try again.');
-      const geoResults = await geoResponse.json();
-      if (!geoResults.length) throw new Error('We could not locate that address on the map. Check the street address and any apartment details, then try again.');
-      const destination = { lat: Number(geoResults[0].lat), lon: Number(geoResults[0].lon) };
+      // Apartment block, floor and unit details are useful for responders but are
+      // rarely indexed by map providers. Geocode the street address separately.
+      const addressQuery = streetAddress.trim();
+      let geoResult = null;
+      let lookupServiceFailed = false;
+
+      try {
+        const nominatimUrl = `https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&countrycodes=za&q=${encodeURIComponent(`${addressQuery}, South Africa`)}`;
+        const geoResponse = await fetch(nominatimUrl, { headers: { Accept: 'application/json' } });
+        if (geoResponse.ok) {
+          const geoResults = await geoResponse.json();
+          if (geoResults.length) geoResult = { lat: Number(geoResults[0].lat), lon: Number(geoResults[0].lon) };
+        } else lookupServiceFailed = true;
+      } catch { lookupServiceFailed = true; }
+
+      // Fallback geocoder helps with addresses that Nominatim does not index.
+      if (!geoResult) {
+        try {
+          const photonUrl = `https://photon.komoot.io/api/?limit=1&lang=en&q=${encodeURIComponent(`${addressQuery}, South Africa`)}`;
+          const photonResponse = await fetch(photonUrl, { headers: { Accept: 'application/json' } });
+          if (photonResponse.ok) {
+            const photonData = await photonResponse.json();
+            const coordinates = photonData.features?.[0]?.geometry?.coordinates;
+            if (coordinates?.length === 2 && Number.isFinite(Number(coordinates[0])) && Number.isFinite(Number(coordinates[1]))) {
+              geoResult = { lat: Number(coordinates[1]), lon: Number(coordinates[0]) };
+            }
+          } else lookupServiceFailed = true;
+        } catch { lookupServiceFailed = true; }
+      }
+
+      if (!geoResult) {
+        if (lookupServiceFailed) throw new Error('Address lookup is temporarily unavailable. Check your connection and try again. Include the street name, suburb and city in the street address.');
+        throw new Error('We could not locate that street address. Include the street name, suburb and city, then try again. Apartment block, floor and unit details are saved for responders but are not used to search the map.');
+      }
+      const destination = geoResult;
       const type = serviceType[organization.organization_type] || 'Incident';
       const { data, error } = await supabase.from('incidents').insert({
         organization_id: organization.id,
@@ -172,12 +201,12 @@ export default function LiveMapPage({ incidents = [], units = [], setSelected, g
     </div>
     {showCreate && <div className="modal-backdrop" onClick={() => !saving && setShowCreate(false)}><div className="modal rr-map-create-modal" onClick={event => event.stopPropagation()}><div className="modal-header"><div><span className="modal-kicker">INCIDENT INTAKE</span><h2>Add incident</h2><p>Enter the address and the details provided to dispatch.</p></div><button className="icon-button" onClick={() => !saving && setShowCreate(false)} disabled={saving} aria-label="Close"><X size={19}/></button></div>
       <form onSubmit={createIncident}>
-        <label>Street address<input required value={streetAddress} onChange={event => setStreetAddress(event.target.value)} placeholder="Street name and suburb" /></label>
+        <label>Street address<input required value={streetAddress} onChange={event => setStreetAddress(event.target.value)} placeholder="Street name, suburb and city" /></label>
         <label>Apartment block <span className="rr-optional">Optional</span><input value={block} onChange={event => setBlock(event.target.value)} placeholder="Block / tower name or number" /></label>
         <div className="form-two"><label>Apartment floor <span className="rr-optional">Optional</span><input value={floor} onChange={event => setFloor(event.target.value)} placeholder="Floor" /></label><label>Apartment unit number <span className="rr-optional">Optional</span><input value={unitNumber} onChange={event => setUnitNumber(event.target.value)} placeholder="Unit number" /></label></div>
         <label>Incident details<textarea required rows="4" value={details} onChange={event => setDetails(event.target.value)} placeholder="Describe what has happened and any important access information…" /></label>
         {formError && <div className="rr-map-form-error"><AlertTriangle size={15}/><span>{formError}</span></div>}
-        <div className="form-note"><Navigation size={15}/><span>The address will be located on the map. A road route and distance from the dispatch device will be shown after the incident is saved.</span></div>
+        <div className="form-note"><Navigation size={15}/><span>Use the street name, suburb and city. Apartment details are saved for responders but do not affect map lookup. A road route and distance from dispatch will be shown after the incident is saved.</span></div>
         <div className="modal-actions"><button type="button" className="btn btn-secondary" onClick={() => setShowCreate(false)} disabled={saving}>Cancel</button><button className="btn btn-primary" type="submit" disabled={saving}>{saving ? <><LoaderCircle size={16} className="rr-spin-icon"/> Locating and saving…</> : <><Plus size={16}/> Create incident</>}</button></div>
       </form>
     </div></div>}
