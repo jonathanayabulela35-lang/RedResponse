@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { AlertTriangle, ChevronRight, Crosshair, MapPin, Navigation, Plus, ShieldCheck, X, LoaderCircle } from 'lucide-react';
-import { IconBadge, StatusPill, Priority } from '../components/operations/OperationalComponents.jsx';
+import { IconBadge, StatusPill } from '../components/operations/OperationalComponents.jsx';
 import { supabase } from '../lib/supabaseClient.js';
 
 const LEAFLET_CSS = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
@@ -46,6 +46,7 @@ export default function LiveMapPage({ incidents = [], units = [], setSelected, g
   const [floor, setFloor] = useState('');
   const [unitNumber, setUnitNumber] = useState('');
   const [details, setDetails] = useState('');
+  const [familiarLandmarks, setFamiliarLandmarks] = useState('');
   const [saving, setSaving] = useState(false);
   const [formError, setFormError] = useState('');
   const [routeSummary, setRouteSummary] = useState('');
@@ -161,18 +162,21 @@ export default function LiveMapPage({ incidents = [], units = [], setSelected, g
         priority: 'medium',
         status: 'new',
         address_text: fullAddress,
-        description: details.trim(),
+        description: [
+          details.trim(),
+          familiarLandmarks.trim() ? `Public familiarity landmarks: ${familiarLandmarks.trim()}` : ''
+        ].filter(Boolean).join('\n\n'),
         intake_source: 'operator_entered',
         location_source: 'operator_entered',
         location: `SRID=4326;POINT(${destination.lon} ${destination.lat})`,
         location_confirmed: false
       }).select('*').single();
       if (error) throw error;
-      const item = { dbId: data.id, id: `RR-${data.incident_number}`, type: data.incident_type || type, category: organization.organization_type, priority: 'Medium', status: 'New', address: fullAddress, area: organization.name, time: new Date(data.opened_at || Date.now()).toLocaleTimeString('en-ZA', { hour: '2-digit', minute: '2-digit' }), elapsed: '', coords: 'Address located on map', coordinates: destination, locationConfirmed: false, units: [], detail: details.trim(), source: 'Operator entered', shared: false };
+      const item = { dbId: data.id, id: `RR-${data.incident_number}`, type: data.incident_type || type, category: organization.organization_type, priority: 'Medium', status: 'New', address: fullAddress, area: organization.name, time: new Date(data.opened_at || Date.now()).toLocaleTimeString('en-ZA', { hour: '2-digit', minute: '2-digit' }), elapsed: '', coords: 'Address located on map', coordinates: destination, locationConfirmed: false, units: [], detail: [details.trim(), familiarLandmarks.trim() ? `Public familiarity landmarks: ${familiarLandmarks.trim()}` : ''].filter(Boolean).join('\n\n'), landmarks: familiarLandmarks.trim(), source: 'Operator entered', shared: false };
       setIncidents?.(previous => [item, ...previous]);
       setSelected?.(item.id);
       setShowCreate(false);
-      setStreetAddress(''); setBlock(''); setFloor(''); setUnitNumber(''); setDetails('');
+      setStreetAddress(''); setBlock(''); setFloor(''); setUnitNumber(''); setDetails(''); setFamiliarLandmarks('');
       await showRoute(destination, fullAddress);
       notify?.(`${item.id} created and location added to the map`);
     } catch (error) { setFormError(error.message || 'Could not create the incident. Please try again.'); }
@@ -195,7 +199,7 @@ export default function LiveMapPage({ incidents = [], units = [], setSelected, g
       </section>
       <aside className="panel rr-live-map-side">
         <div className="panel-header"><div><h2>Active incidents</h2><p>{active.length} open incident{active.length === 1 ? '' : 's'} in this organisation</p></div><span className="rr-map-count">{active.length}</span></div>
-        {active.length ? <div className="rr-live-incident-list">{active.map(i => <button className="rr-live-incident" key={i.id} onClick={() => { if (i.coordinates) showRoute(i.coordinates, i.address || i.id); setSelected?.(i.id); }}><IconBadge category={i.category}/><span className="rr-live-incident-copy"><strong>{i.id} · {i.type}</strong><small>{i.address || 'Address not recorded'}</small><span className="rr-live-incident-tags"><Priority value={i.priority}/><StatusPill status={i.status}/></span></span><ChevronRight size={15}/></button>)}</div> : <div className="empty-state rr-live-map-empty"><MapPin size={23}/><strong>No active incidents</strong><span>Add an incident to pin its location and calculate the route from dispatch.</span></div>}
+        {active.length ? <div className="rr-live-incident-list">{active.map(i => <button className="rr-live-incident" key={i.id} onClick={() => { if (i.coordinates) showRoute(i.coordinates, i.address || i.id); setSelected?.(i.id); }}><IconBadge category={i.category}/><span className="rr-live-incident-copy"><strong>{i.id} · {i.type}</strong><small>{i.address || 'Address not recorded'}</small><span className="rr-live-incident-tags"><StatusPill status={i.status}/></span></span><ChevronRight size={15}/></button>)}</div> : <div className="empty-state rr-live-map-empty"><MapPin size={23}/><strong>No active incidents</strong><span>Add an incident to pin its location and calculate the route from dispatch.</span></div>}
         <div className="rr-live-map-side-note"><ShieldCheck size={16}/><span>The route uses the address location returned by OpenStreetMap and road routing where available. Confirm the pin and entrance with the caller before dispatching responders.</span></div>
       </aside>
     </div>
@@ -205,8 +209,9 @@ export default function LiveMapPage({ incidents = [], units = [], setSelected, g
         <label>Apartment block <span className="rr-optional">Optional</span><input value={block} onChange={event => setBlock(event.target.value)} placeholder="Block / tower name or number" /></label>
         <div className="form-two"><label>Apartment floor <span className="rr-optional">Optional</span><input value={floor} onChange={event => setFloor(event.target.value)} placeholder="Floor" /></label><label>Apartment unit number <span className="rr-optional">Optional</span><input value={unitNumber} onChange={event => setUnitNumber(event.target.value)} placeholder="Unit number" /></label></div>
         <label>Incident details<textarea required rows="4" value={details} onChange={event => setDetails(event.target.value)} placeholder="Describe what has happened and any important access information…" /></label>
+        <label>Public familiarity places or landmarks <span className="rr-optional">Optional</span><textarea rows="3" value={familiarLandmarks} onChange={event => setFamiliarLandmarks(event.target.value)} placeholder="For example, the building is opposite the blue Shoprite, beside a fuel station, or at the corner of Main and Oak streets…" /></label>
         {formError && <div className="rr-map-form-error"><AlertTriangle size={15}/><span>{formError}</span></div>}
-        <div className="form-note"><Navigation size={15}/><span>Use the street name, suburb and city. Apartment details are saved for responders but do not affect map lookup. A road route and distance from dispatch will be shown after the incident is saved.</span></div>
+        <div className="form-note"><Navigation size={15}/><span>Use the street name, suburb and city. Apartment details and public landmarks are saved for responders; only the street address is used for map lookup. A road route and distance from dispatch will be shown after the incident is saved.</span></div>
         <div className="modal-actions"><button type="button" className="btn btn-secondary" onClick={() => setShowCreate(false)} disabled={saving}>Cancel</button><button className="btn btn-primary" type="submit" disabled={saving}>{saving ? <><LoaderCircle size={16} className="rr-spin-icon"/> Locating and saving…</> : <><Plus size={16}/> Create incident</>}</button></div>
       </form>
     </div></div>}
