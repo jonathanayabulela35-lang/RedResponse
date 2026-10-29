@@ -30,6 +30,7 @@ const km = metres => metres >= 1000 ? `${(metres / 1000).toFixed(1)} km` : `${Ma
 
 export default function LiveMapPage({ incidents = [], units = [], setSelected, go, organization, setIncidents, notify }) {
   const mapElement = useRef(null);
+  const incidentClickTimer = useRef(null);
   const mapRef = useRef(null);
   const markerRef = useRef(null);
   const accuracyRef = useRef(null);
@@ -183,6 +184,68 @@ export default function LiveMapPage({ incidents = [], units = [], setSelected, g
     finally { setSaving(false); }
   };
 
+  const locateIncident = async incident => {
+    const saved = incident.coordinates;
+    const savedLocation = incident.locationRaw;
+    const locationText = typeof savedLocation === 'string' ? savedLocation : '';
+    const savedPointMatch = locationText.match(/POINT\s*\(\s*(-?\d+(?:\.\d+)?)\s+(-?\d+(?:\.\d+)?)\s*\)/i);
+    if (savedPointMatch) {
+      await showRoute({ lon: Number(savedPointMatch[1]), lat: Number(savedPointMatch[2]) }, incident.address || incident.id);
+      return;
+    }
+    if (saved && typeof saved === 'object' && Number.isFinite(Number(saved.lat)) && Number.isFinite(Number(saved.lon))) {
+      await showRoute({ lat: Number(saved.lat), lon: Number(saved.lon) }, incident.address || incident.id);
+      return;
+    }
+    // Older incident rows may contain a saved PostGIS point without mapped coordinates.
+    const pointText = typeof saved === 'string' ? saved : '';
+    const pointMatch = pointText.match(/POINT\s*\(\s*(-?\d+(?:\.\d+)?)\s+(-?\d+(?:\.\d+)?)\s*\)/i);
+    if (pointMatch) {
+      await showRoute({ lon: Number(pointMatch[1]), lat: Number(pointMatch[2]) }, incident.address || incident.id);
+      return;
+    }
+    const address = (incident.address || '').replace(/,\s*(?:Block|Floor|Unit)\s+[^,]+/gi, '').trim();
+    if (!address) { setRouteSummary('This incident does not have a recorded address to locate.'); return; }
+    setRouteSummary('Locating incident address…');
+    try {
+      let point = null;
+      const nominatim = await fetch(`https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&countrycodes=za&q=${encodeURIComponent(address)}`, { headers: { Accept: 'application/json' } });
+      if (nominatim.ok) {
+        const result = (await nominatim.json())[0];
+        if (result) point = { lat: Number(result.lat), lon: Number(result.lon) };
+      }
+      if (!point) {
+        const photon = await fetch(`https://photon.komoot.io/api/?limit=1&lang=en&q=${encodeURIComponent(address + ', South Africa')}`, { headers: { Accept: 'application/json' } });
+        if (photon.ok) {
+          const coords = (await photon.json()).features?.[0]?.geometry?.coordinates;
+          if (coords?.length === 2) point = { lon: Number(coords[0]), lat: Number(coords[1]) };
+        }
+      }
+      if (!point || !Number.isFinite(point.lat) || !Number.isFinite(point.lon)) throw new Error('Address could not be located');
+      await showRoute(point, address);
+    } catch {
+      setRouteSummary('Could not locate this incident address. Check the address or update its map location before routing.');
+    }
+  };
+
+  const handleIncidentClick = incident => {
+    if (incidentClickTimer.current) window.clearTimeout(incidentClickTimer.current);
+    incidentClickTimer.current = window.setTimeout(() => {
+      locateIncident(incident);
+      setSelected?.(incident.id);
+      incidentClickTimer.current = null;
+    }, 260);
+  };
+
+  const handleIncidentDoubleClick = incident => {
+    if (incidentClickTimer.current) window.clearTimeout(incidentClickTimer.current);
+    incidentClickTimer.current = null;
+    setSelected?.(incident.id);
+    go?.('Incident detail');
+  };
+
+  useEffect(() => () => { if (incidentClickTimer.current) window.clearTimeout(incidentClickTimer.current); }, []);
+
   const locateDispatch = () => { if (position && mapRef.current) mapRef.current.setView([position.lat, position.lon], 16, { animate: true }); else if (navigator.geolocation) { setLocationStatus('Requesting dispatch device location…'); navigator.geolocation.getCurrentPosition(() => {}, () => {}, { enableHighAccuracy: true, timeout: 15000 }); setMapError('Still waiting for the device location. Check browser location permission and try again.'); } };
 
   return <>
@@ -199,7 +262,7 @@ export default function LiveMapPage({ incidents = [], units = [], setSelected, g
       </section>
       <aside className="panel rr-live-map-side">
         <div className="panel-header"><div><h2>Active incidents</h2><p>{active.length} open incident{active.length === 1 ? '' : 's'} in this organisation</p></div><span className="rr-map-count">{active.length}</span></div>
-        {active.length ? <div className="rr-live-incident-list">{active.map(i => <button className="rr-live-incident" key={i.id} onClick={() => { if (i.coordinates) showRoute(i.coordinates, i.address || i.id); setSelected?.(i.id); }}><IconBadge category={i.category}/><span className="rr-live-incident-copy"><strong>{i.id} · {i.type}</strong><small>{i.address || 'Address not recorded'}</small><span className="rr-live-incident-tags"><StatusPill status={i.status}/></span></span><ChevronRight size={15}/></button>)}</div> : <div className="empty-state rr-live-map-empty"><MapPin size={23}/><strong>No active incidents</strong><span>Add an incident to pin its location and calculate the route from dispatch.</span></div>}
+        {active.length ? <div className="rr-live-incident-list">{active.map(i => <button className="rr-live-incident" key={i.id} onClick={() => handleIncidentClick(i)} onDoubleClick={() => handleIncidentDoubleClick(i)} title="Click once to show route · double-click to open incident details"><IconBadge category={i.category}/><span className="rr-live-incident-copy"><strong>{i.id} · {i.type}</strong><small>{i.address || 'Address not recorded'}</small><span className="rr-live-incident-tags"><StatusPill status={i.status}/></span><small className="rr-incident-click-hint">Click once: route · Double-click: incident channel</small></span><ChevronRight size={15}/></button>)}</div> : <div className="empty-state rr-live-map-empty"><MapPin size={23}/><strong>No active incidents</strong><span>Add an incident to pin its location and calculate the route from dispatch.</span></div>}
         <div className="rr-live-map-side-note"><ShieldCheck size={16}/><span>The route uses the address location returned by OpenStreetMap and road routing where available. Confirm the pin and entrance with the caller before dispatching responders.</span></div>
       </aside>
     </div>
