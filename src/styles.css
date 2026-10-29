@@ -188,3 +188,7 @@ body { font-size: 14px; line-height: 1.5; }
 .pulse-dot,.small-live{background:#287f70!important;box-shadow:0 0 0 3px #287f701d!important}
 .live-indicator{color:#287f70!important;background:#eaf4f1!important;border-color:#cfe4dd!important}
 .live-indicator i{background:#287f70!important}
+
+/* Operational data semantic accents: green for registered units, soft yellow for location validation. */
+.activity-icon.green{color:#167653!important;background:#eaf6ef!important}
+.activity-icon.yellow{color:#9a6b13!important;background:#fff5d9!important}
