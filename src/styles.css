@@ -189,6 +189,7 @@ body { font-size: 14px; line-height: 1.5; }
 .live-indicator{color:#287f70!important;background:#eaf4f1!important;border-color:#cfe4dd!important}
 .live-indicator i{background:#287f70!important}
 
-/* Operational data semantic accents: green for registered units, soft yellow for location validation. */
-.activity-icon.green{color:#167653!important;background:#eaf6ef!important}
-.activity-icon.yellow{color:#9a6b13!important;background:#fff5d9!important}
+/* Operational data accents aligned with the RedResponse red, navy and slate palette. */
+.activity-icon.green{color:#385779!important;background:#edf1f6!important}
+.activity-icon.yellow{color:#d92d20!important;background:#fff0ee!important}
+.footer-dot{background:#d92d20!important}
