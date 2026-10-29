@@ -69,3 +69,48 @@
   .page-heading h1 { font-size: 23px; }
   .nav-item { font-size: 12px; }
 }
+
+
+/* Standard SaaS typography scale: comfortable reading sizes across the workspace. */
+:root { font-size: 14px; }
+body { font-size: 14px; line-height: 1.5; }
+.nav-item { font-size: 14px !important; line-height: 1.4; }
+.nav-label { font-size: 11px !important; }
+.brand-caption { font-size: 10px !important; }
+.breadcrumb { font-size: 13px !important; }
+.live-indicator { font-size: 10px !important; }
+.top-search input { font-size: 13px !important; }
+.top-search kbd { font-size: 11px !important; }
+.page-heading h1 { font-size: 30px; line-height: 1.2; }
+.page-heading p { font-size: 14px !important; line-height: 1.6; }
+.eyebrow { font-size: 11px !important; }
+.panel-header h2 { font-size: 16px !important; line-height: 1.4; }
+.panel-header p { font-size: 12px !important; line-height: 1.5; }
+.metric-label { font-size: 12px !important; }
+.metric-note { font-size: 11px !important; line-height: 1.5 !important; }
+.btn, .btn-small { font-size: 13px !important; }
+.text-button { font-size: 12px !important; }
+.priority, .status-pill, .metric-trend { font-size: 11px !important; }
+.panel-footer, .map-legend, .updated-tag, .incident-address, .detail-id, .unit-id, .coord-access, .empty-assignment, .form-note, .dispatch-modal-label, .modal-kicker, .target-label, .panel-subhead, .activity-footer { font-size: 11px !important; line-height: 1.5; }
+.map-street, .map-place, .map-scale, .map-attribution { font-size: 10px !important; }
+.modal label { font-size: 13px !important; }
+.modal input, .modal select, .modal textarea { font-size: 14px !important; }
+.modal-header h2 { font-size: 22px !important; }
+.modal-header p { font-size: 13px !important; }
+.app-footer { font-size: 11px !important; line-height: 1.5; }
+.back-to-site { display:flex; align-items:center; justify-content:center; gap:10px; width:100%; min-height:44px; padding:11px 13px; border:1px solid #35445a; border-radius:9px; background:#1a2940; color:#f3f6fb; text-decoration:none; font-size:14px; font-weight:600; line-height:1.3; transition:background .15s ease,border-color .15s ease; }
+.back-to-site svg { flex-shrink:0; color:#ff756b; }
+.back-to-site:hover { background:#243650; border-color:#52637a; }
+@media (max-width:760px) {
+  .page-heading h1 { font-size:26px !important; }
+  .page-heading p { font-size:13px !important; }
+  .nav-item { font-size:14px !important; }
+  .metric-label { font-size:12px !important; }
+  .metric-note { font-size:11px !important; }
+  .app-footer { font-size:11px !important; }
+}
+@media (max-width:420px) {
+  .page-heading h1 { font-size:24px !important; }
+  .breadcrumb { font-size:12px !important; }
+  .btn, .btn-small { font-size:12px !important; }
+}

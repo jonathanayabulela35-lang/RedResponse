@@ -30,7 +30,7 @@ function OperationsWorkspace({ organization, onSignOut }){
   <aside className={`sidebar ${mobileNav?'open':''}`}>
    <AppBrand onClose={() => setMobileNav(false)} />
    <div className="sidebar-nav">{navGroups.filter(g=>g.label!=='COORDINATION').map(g=><div className="nav-group" key={g.label}><div className="nav-label">{g.label}</div>{g.items.filter(([label])=>organization.role==='platform_admin'||!['Departments','Cross-department'].includes(label)).map(([label,Icon])=><button key={label} className={`nav-item ${navPage===label?'active':''}`} onClick={()=>go(label)}><Icon size={18}/><span>{label}</span>{label==='Live incidents'&&<b className="nav-count">{scopedIncidents.filter(i=>!['Resolved','Closed'].includes(i.status)).length}</b>}{label==='Cross-department'&&<span className="nav-dot"/>}</button>)}</div>)}</div>
-   <div className="sidebar-bottom"><div className="profile"><div className="avatar">JD</div><div className="profile-copy"><strong>{organization.email||'Account'}</strong><span>{String(organization.role||'member').replace(/_/g,' ')}</span></div><MoreHorizontal size={19}/></div></div>
+   <div className="sidebar-bottom"><a className="back-to-site" href="/" onClick={(event)=>{event.preventDefault();window.location.href='/';}}><Globe2 size={18}/><span>Back to site</span></a></div>
   </aside>
   {mobileNav&&<div className="scrim" onClick={()=>setMobileNav(false)}/>}
   <main className="main-area">
