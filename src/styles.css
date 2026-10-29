@@ -176,3 +176,19 @@ body { font-size: 14px; line-height: 1.5; }
 @keyframes rr-location-pulse{0%{transform:scale(.65);opacity:.9}100%{transform:scale(1.35);opacity:0}}
 @media(max-width:1000px){.rr-live-map-layout{grid-template-columns:1fr}.rr-live-map-canvas{height:55vh;min-height:360px}.rr-live-map-side-note{margin-top:0}}
 @media(max-width:600px){.rr-live-map-toolbar{align-items:flex-start;flex-direction:column}.rr-live-map-meta{padding-left:19px}.rr-live-map-footer{align-items:flex-start;flex-direction:column;gap:6px}.rr-live-map-canvas{min-height:320px}}
+
+/* Live map incident creation */
+.rr-live-map-actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.rr-map-create-modal{max-height:calc(100vh - 36px);overflow-y:auto}
+.rr-map-create-modal form{display:flex;flex-direction:column;gap:14px}
+.rr-map-create-modal label{display:flex;flex-direction:column;gap:7px;font-size:12px;font-weight:650;color:#34445b}
+.rr-map-create-modal input,.rr-map-create-modal textarea{width:100%;box-sizing:border-box;border:1px solid #dce2ea;border-radius:9px;background:#fff;padding:11px 12px;font:inherit;font-size:13px;color:#26364c;outline:none}
+.rr-map-create-modal input:focus,.rr-map-create-modal textarea:focus{border-color:#d92d20;box-shadow:0 0 0 3px #d92d2014}
+.rr-map-create-modal textarea{resize:vertical;min-height:88px}
+.rr-optional{display:inline;color:#8793a4;font-size:10px;font-weight:500}
+.rr-map-form-error{display:flex;gap:8px;align-items:flex-start;padding:10px 12px;border:1px solid #f2d4d0;border-radius:8px;background:#fff7f6;color:#9b3027;font-size:12px;line-height:1.5}
+.rr-map-form-error svg{flex-shrink:0;margin-top:1px}
+.rr-map-legend-destination{display:inline-block;width:8px;height:8px;border-radius:50%;background:#263f77;margin-left:8px}
+.rr-spin-icon{animation:rr-spin 1s linear infinite}
+@keyframes rr-spin{to{transform:rotate(360deg)}}
+@media(max-width:600px){.rr-live-map-actions{width:100%}.rr-live-map-actions .btn{flex:1;justify-content:center}.rr-map-create-modal{width:calc(100% - 24px);padding:18px}.rr-map-create-modal .form-two{grid-template-columns:1fr}}
