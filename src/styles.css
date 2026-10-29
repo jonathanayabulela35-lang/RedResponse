@@ -138,58 +138,41 @@ body { font-size: 14px; line-height: 1.5; }
 @media(max-width:1250px){.app-footer{left:225px;padding-left:22px!important;padding-right:22px!important;}}
 @media(max-width:760px){.app-footer{left:0;min-height:58px;padding:9px 14px!important;align-items:flex-start;flex-direction:column;gap:3px;}.content-wrap{padding-bottom:100px!important;}}
 
-
-/* RedResponse visual system: cohesive accents, stable grid alignment, and a true single loading state. */
-:root{
-  --rr-accent:#d92d20;
-  --rr-accent-soft:#fff0ee;
-  --rr-navy:#111e32;
-  --rr-navy-soft:#eaf0f7;
-  --rr-teal:#21836f;
-  --rr-teal-soft:#eaf6f2;
-  --rr-warning:#b97826;
-  --rr-warning-soft:#fbf3e7;
-}
-.rr-fullscreen-loading{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;background:#f5f7fa;min-height:100dvh;width:100vw}
-.rr-fullscreen-loading .rr-spin{width:36px;height:36px;border-width:3px;border-color:#dfe5ed;border-top-color:var(--rr-accent)}
-.rr-workspace-loading{display:none!important}
-/* Grid children stretch evenly; cards must not force their neighbours to misalign. */
-.dashboard-grid,.lower-grid,.incidents-layout,.dispatch-board-grid,.dispatch-summary,.metric-grid,.unit-grid,.coordination-grid,.department-cards,.generic-card-grid,.map-page-layout,.map-side-list{align-items:stretch}
-.dashboard-grid>*,.lower-grid>*,.incidents-layout>*,.dispatch-board-grid>*,.dispatch-summary>*,.metric-grid>*,.unit-grid>*,.coordination-grid>*,.department-cards>*,.generic-card-grid>*,.map-page-layout>*,.map-side-list>*{min-width:0;min-height:0}
-.dashboard-grid>.panel,.lower-grid>.panel,.dispatch-board-grid>.panel,.map-side-list>.panel{height:100%;min-width:0}
-.dispatch-board-grid{grid-auto-rows:minmax(0,1fr);gap:16px}
-.dispatch-board-grid .panel,.dispatch-board-grid .dispatch-lane,.dispatch-board-grid .dispatch-column{display:flex;flex-direction:column;min-width:0}
-.dispatch-board-grid .panel-body,.dispatch-board-grid .dispatch-lane-body,.dispatch-board-grid .dispatch-column-body{flex:1;min-height:0}
-.incidents-layout{grid-template-columns:minmax(0,1fr) minmax(300px,360px);gap:16px}
-.incidents-layout>.panel,.incidents-layout>.incident-detail{align-self:stretch;min-width:0}
-.metric-grid{grid-auto-rows:1fr}
-.metric-card{height:100%;min-width:0}
-/* Keep the palette intentional: red for primary response actions, navy for structure, teal for positive states. */
-.timeline-marker.purple{background:#6b7f9b!important}
-.generic-card-icon{background:var(--rr-navy-soft)!important;color:#355577!important}
-.notifications-intro-icon,.notifications-empty-icon,.generic-hero-icon{background:var(--rr-accent-soft)!important;color:var(--rr-accent)!important}
-.status-pill.success,.status-pill.available,.status-pill.resolved,.status-pill.closed,.unit-status.available{background:var(--rr-teal-soft)!important;color:var(--rr-teal)!important;border-color:#cfe8df!important}
-.metric-trend.positive,.trend-positive{background:var(--rr-teal-soft)!important;color:var(--rr-teal)!important}
-.priority.low{background:#edf1f5!important;color:#526277!important}
-.priority.medium{background:var(--rr-warning-soft)!important;color:#94601e!important}
-@media(max-width:1000px){.incidents-layout{grid-template-columns:minmax(0,1fr)}.dispatch-board-grid{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:auto}}
-@media(max-width:760px){.dispatch-board-grid{grid-template-columns:minmax(0,1fr)}.incidents-layout{grid-template-columns:minmax(0,1fr)}.dispatch-summary{grid-template-columns:repeat(2,minmax(0,1fr))}}
-
-/* RedResponse global palette alignment: brand red, navy, muted teal and neutral slate. */
-:root{--green:#287f70;--blue:#385779;--rr-teal:#287f70;--rr-teal-soft:#eaf4f1;--rr-warning:#8b6670;--rr-warning-soft:#f6eef0}
-.metric-icon.green,.metric-icon.purple,.metric-icon.orange{color:#385779!important;background:#edf1f6!important}
-.metric-icon.blue{color:#385779!important;background:#edf1f6!important}
-.metric-trend{color:#287f70!important;background:#eaf4f1!important}
-.incident-icon.road,.legend-green{color:#287f70!important;background:#eaf4f1!important}
-.incident-icon.fire,.legend-orange,.priority.medium{color:#8b6670!important;background:#f6eef0!important}
-.legend-purple,.timeline-marker.purple{color:#526277!important;background:#edf1f6!important}
-.priority.medium{border-color:#eadde1!important}
-.status-pill.success,.status-pill.available,.status-pill.resolved,.status-pill.closed,.unit-status.available{background:#eaf4f1!important;color:#287f70!important;border-color:#cfe4dd!important}
-.pulse-dot,.small-live{background:#287f70!important;box-shadow:0 0 0 3px #287f701d!important}
-.live-indicator{color:#287f70!important;background:#eaf4f1!important;border-color:#cfe4dd!important}
-.live-indicator i{background:#287f70!important}
-
-/* Operational data accents aligned with the RedResponse red, navy and slate palette. */
-.activity-icon.green{color:#385779!important;background:#edf1f6!important}
-.activity-icon.yellow{color:#d92d20!important;background:#fff0ee!important}
-.footer-dot{background:#d92d20!important}
+/* Live dispatch map */
+.rr-live-map-layout{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(300px,.85fr);gap:16px;align-items:stretch}
+.rr-live-map-panel{min-width:0;display:flex;flex-direction:column}
+.rr-live-map-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 17px;border-bottom:1px solid #edf0f4}
+.rr-live-map-status{display:flex;align-items:center;gap:10px;min-width:0}
+.rr-live-map-status>div{display:flex;flex-direction:column;gap:4px;min-width:0}
+.rr-live-map-status strong{font-size:12px;color:#253348}
+.rr-live-map-status span:not(.rr-map-status-dot){font-size:11px;color:#7e8b9d}
+.rr-map-status-dot{width:9px;height:9px;border-radius:50%;background:#9aa5b4;box-shadow:0 0 0 4px #edf0f4;flex-shrink:0}
+.rr-map-status-dot.is-located{background:#d92d20;box-shadow:0 0 0 4px #d92d201a}
+.rr-live-map-meta{font-size:11px;color:#67758a;white-space:nowrap}
+.rr-live-map-canvas{height:min(65vh,680px);min-height:420px;background:#edf1f5;z-index:1}
+.rr-live-map-canvas .leaflet-control-attribution{font-size:10px}
+.rr-live-map-footer{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:11px 15px;color:#748196;font-size:11px;border-top:1px solid #edf0f4}
+.rr-live-map-footer>span:first-child{display:flex;align-items:center;gap:7px;color:#34445b;font-weight:600}
+.rr-map-legend-dot{width:8px;height:8px;border-radius:50%;background:#d92d20;box-shadow:0 0 0 3px #d92d201a}
+.rr-map-message{display:flex;align-items:flex-start;gap:9px;padding:12px 15px;background:#fff8f6;border-top:1px solid #f5ddd8;color:#8c3b33;font-size:12px;line-height:1.55}
+.rr-map-message svg{flex-shrink:0;margin-top:1px;color:#d92d20}
+.rr-live-map-side{display:flex;flex-direction:column;min-width:0}
+.rr-map-count{display:grid;place-items:center;min-width:28px;height:28px;border-radius:8px;background:#fff0ee;color:#c52b22;font-size:12px;font-weight:700}
+.rr-live-incident-list{display:flex;flex-direction:column}
+.rr-live-incident{display:flex;align-items:center;gap:10px;padding:13px 14px;border:0;border-bottom:1px solid #edf0f4;background:#fff;text-align:left;width:100%;min-width:0}
+.rr-live-incident:hover{background:#fafbfd}
+.rr-live-incident>svg:last-child{flex-shrink:0;color:#9aa5b4}
+.rr-live-incident-copy{display:flex;flex:1;flex-direction:column;gap:6px;min-width:0}
+.rr-live-incident-copy>strong{font-size:12px;color:#2b394e;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rr-live-incident-copy>small{font-size:11px;color:#7e8b9d;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rr-live-incident-tags{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.rr-live-map-side-note{display:flex;align-items:flex-start;gap:8px;padding:13px 14px;margin-top:auto;background:#fafbfd;border-top:1px solid #edf0f4;color:#778498;font-size:11px;line-height:1.6}
+.rr-live-map-side-note svg{flex-shrink:0;color:#6b7f9c;margin-top:1px}
+.rr-live-map-empty{padding:35px 18px}
+.rr-dispatch-marker-wrap{background:transparent;border:0}
+.rr-dispatch-marker{width:26px;height:26px;display:grid;place-items:center;border-radius:50%;background:#d92d20;border:3px solid #fff;box-shadow:0 2px 12px #17243860;position:relative}
+.rr-dispatch-marker:after{content:"";position:absolute;inset:-8px;border-radius:50%;border:2px solid #d92d2050;animation:rr-location-pulse 2s ease-out infinite}
+.rr-dispatch-marker span{width:6px;height:6px;border-radius:50%;background:#fff}
+@keyframes rr-location-pulse{0%{transform:scale(.65);opacity:.9}100%{transform:scale(1.35);opacity:0}}
+@media(max-width:1000px){.rr-live-map-layout{grid-template-columns:1fr}.rr-live-map-canvas{height:55vh;min-height:360px}.rr-live-map-side-note{margin-top:0}}
+@media(max-width:600px){.rr-live-map-toolbar{align-items:flex-start;flex-direction:column}.rr-live-map-meta{padding-left:19px}.rr-live-map-footer{align-items:flex-start;flex-direction:column;gap:6px}.rr-live-map-canvas{min-height:320px}}
