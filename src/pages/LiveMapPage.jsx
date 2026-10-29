@@ -42,7 +42,6 @@ export default function LiveMapPage({ incidents = [], units = [], setSelected, g
   const [lastUpdate, setLastUpdate] = useState(null);
   const [showCreate, setShowCreate] = useState(false);
   const [streetAddress, setStreetAddress] = useState('');
-  const [buildingNumber, setBuildingNumber] = useState('');
   const [block, setBlock] = useState('');
   const [floor, setFloor] = useState('');
   const [unitNumber, setUnitNumber] = useState('');
@@ -116,14 +115,14 @@ export default function LiveMapPage({ incidents = [], units = [], setSelected, g
     event.preventDefault(); setFormError('');
     if (!supabase || !organization?.id) { setFormError('The organisation database is not connected.'); return; }
     if (!position) { setFormError('Dispatch location is not available yet. Allow location access before creating an incident so the map can calculate the distance.'); return; }
-    const fullAddress = [buildingNumber.trim(), streetAddress.trim(), block.trim() ? `Block ${block.trim()}` : '', floor.trim() ? `Floor ${floor.trim()}` : '', unitNumber.trim() ? `Unit ${unitNumber.trim()}` : ''].filter(Boolean).join(', ');
+    const fullAddress = [streetAddress.trim(), block.trim() ? `Block ${block.trim()}` : '', floor.trim() ? `Floor ${floor.trim()}` : '', unitNumber.trim() ? `Unit ${unitNumber.trim()}` : ''].filter(Boolean).join(', ');
     setSaving(true);
     try {
       const query = `${fullAddress}, South Africa`;
       const geoResponse = await fetch(`https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&countrycodes=za&q=${encodeURIComponent(query)}`, { headers: { Accept: 'application/json' } });
       if (!geoResponse.ok) throw new Error('The address lookup service is unavailable. Please try again.');
       const geoResults = await geoResponse.json();
-      if (!geoResults.length) throw new Error('We could not locate that address on the map. Check the street address and building number, then try again.');
+      if (!geoResults.length) throw new Error('We could not locate that address on the map. Check the street address and any apartment details, then try again.');
       const destination = { lat: Number(geoResults[0].lat), lon: Number(geoResults[0].lon) };
       const type = serviceType[organization.organization_type] || 'Incident';
       const { data, error } = await supabase.from('incidents').insert({
@@ -144,7 +143,7 @@ export default function LiveMapPage({ incidents = [], units = [], setSelected, g
       setIncidents?.(previous => [item, ...previous]);
       setSelected?.(item.id);
       setShowCreate(false);
-      setStreetAddress(''); setBuildingNumber(''); setBlock(''); setFloor(''); setUnitNumber(''); setDetails('');
+      setStreetAddress(''); setBlock(''); setFloor(''); setUnitNumber(''); setDetails('');
       await showRoute(destination, fullAddress);
       notify?.(`${item.id} created and location added to the map`);
     } catch (error) { setFormError(error.message || 'Could not create the incident. Please try again.'); }
@@ -174,7 +173,6 @@ export default function LiveMapPage({ incidents = [], units = [], setSelected, g
     {showCreate && <div className="modal-backdrop" onClick={() => !saving && setShowCreate(false)}><div className="modal rr-map-create-modal" onClick={event => event.stopPropagation()}><div className="modal-header"><div><span className="modal-kicker">INCIDENT INTAKE</span><h2>Add incident</h2><p>Enter the address and the details provided to dispatch.</p></div><button className="icon-button" onClick={() => !saving && setShowCreate(false)} disabled={saving} aria-label="Close"><X size={19}/></button></div>
       <form onSubmit={createIncident}>
         <label>Street address<input required value={streetAddress} onChange={event => setStreetAddress(event.target.value)} placeholder="Street name and suburb" /></label>
-        <label>House / apartment building number<input required value={buildingNumber} onChange={event => setBuildingNumber(event.target.value)} placeholder="e.g. 24 or Building C" /></label>
         <label>Apartment block <span className="rr-optional">Optional</span><input value={block} onChange={event => setBlock(event.target.value)} placeholder="Block / tower name or number" /></label>
         <div className="form-two"><label>Apartment floor <span className="rr-optional">Optional</span><input value={floor} onChange={event => setFloor(event.target.value)} placeholder="Floor" /></label><label>Apartment unit number <span className="rr-optional">Optional</span><input value={unitNumber} onChange={event => setUnitNumber(event.target.value)} placeholder="Unit number" /></label></div>
         <label>Incident details<textarea required rows="4" value={details} onChange={event => setDetails(event.target.value)} placeholder="Describe what has happened and any important access information…" /></label>

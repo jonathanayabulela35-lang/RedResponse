@@ -192,3 +192,17 @@ body { font-size: 14px; line-height: 1.5; }
 .rr-spin-icon{animation:rr-spin 1s linear infinite}
 @keyframes rr-spin{to{transform:rotate(360deg)}}
 @media(max-width:600px){.rr-live-map-actions{width:100%}.rr-live-map-actions .btn{flex:1;justify-content:center}.rr-map-create-modal{width:calc(100% - 24px);padding:18px}.rr-map-create-modal .form-two{grid-template-columns:1fr}}
+
+
+/* Keep the workspace-entry spinner centred in the full viewport. */
+.rr-auth-loading {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: #f7f9fc;
+  z-index: 9999;
+}
