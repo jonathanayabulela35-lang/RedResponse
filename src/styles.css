@@ -174,3 +174,17 @@ body { font-size: 14px; line-height: 1.5; }
 .priority.medium{background:var(--rr-warning-soft)!important;color:#94601e!important}
 @media(max-width:1000px){.incidents-layout{grid-template-columns:minmax(0,1fr)}.dispatch-board-grid{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:auto}}
 @media(max-width:760px){.dispatch-board-grid{grid-template-columns:minmax(0,1fr)}.incidents-layout{grid-template-columns:minmax(0,1fr)}.dispatch-summary{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* RedResponse global palette alignment: brand red, navy, muted teal and neutral slate. */
+:root{--green:#287f70;--blue:#385779;--rr-teal:#287f70;--rr-teal-soft:#eaf4f1;--rr-warning:#8b6670;--rr-warning-soft:#f6eef0}
+.metric-icon.green,.metric-icon.purple,.metric-icon.orange{color:#385779!important;background:#edf1f6!important}
+.metric-icon.blue{color:#385779!important;background:#edf1f6!important}
+.metric-trend{color:#287f70!important;background:#eaf4f1!important}
+.incident-icon.road,.legend-green{color:#287f70!important;background:#eaf4f1!important}
+.incident-icon.fire,.legend-orange,.priority.medium{color:#8b6670!important;background:#f6eef0!important}
+.legend-purple,.timeline-marker.purple{color:#526277!important;background:#edf1f6!important}
+.priority.medium{border-color:#eadde1!important}
+.status-pill.success,.status-pill.available,.status-pill.resolved,.status-pill.closed,.unit-status.available{background:#eaf4f1!important;color:#287f70!important;border-color:#cfe4dd!important}
+.pulse-dot,.small-live{background:#287f70!important;box-shadow:0 0 0 3px #287f701d!important}
+.live-indicator{color:#287f70!important;background:#eaf4f1!important;border-color:#cfe4dd!important}
+.live-indicator i{background:#287f70!important}
