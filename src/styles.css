@@ -265,3 +265,12 @@ body { font-size: 14px; line-height: 1.5; }
 .rr-incident-focus-empty p { color: #667085; font-size: 13px; }
 @media (max-width: 850px) { .rr-incident-focus-grid { grid-template-columns: 1fr; } .rr-focus-address { max-width: 100%; margin-left: 0; } .rr-incident-focus-summary { flex-wrap: wrap; } }
 @media (max-width: 560px) { .rr-incident-focus-heading { align-items: flex-start; flex-direction: column; } .rr-focus-unit { align-items: flex-start; flex-wrap: wrap; } .rr-focus-unit-status { margin-left: 53px; max-width: calc(100% - 53px); } .rr-focus-summary-copy { flex: 1; } }
+
+/* Incident detail assignment and attendance controls */
+.rr-focus-actions { margin-left: auto; display: flex; align-items: center; }
+.rr-focus-assign { padding: 14px 18px; border-bottom: 1px solid #eaecf0; display: flex; flex-direction: column; gap: 8px; }
+.rr-focus-assign label { color: #344054; font-size: 12px; font-weight: 650; }
+.rr-focus-assign-controls { display: flex; gap: 8px; align-items: center; }
+.rr-focus-assign-controls select { min-width: 0; flex: 1; height: 38px; border: 1px solid #d0d5dd; border-radius: 8px; padding: 0 10px; color: #344054; background: #fff; font: inherit; font-size: 12px; }
+.rr-focus-assign-controls .btn { white-space: nowrap; }
+@media (max-width: 560px) { .rr-focus-actions { width: 100%; margin-left: 0; } .rr-focus-assign-controls { align-items: stretch; flex-direction: column; } }
