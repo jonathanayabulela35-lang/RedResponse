@@ -137,3 +137,40 @@ body { font-size: 14px; line-height: 1.5; }
 .rr-org-context{display:none!important;}
 @media(max-width:1250px){.app-footer{left:225px;padding-left:22px!important;padding-right:22px!important;}}
 @media(max-width:760px){.app-footer{left:0;min-height:58px;padding:9px 14px!important;align-items:flex-start;flex-direction:column;gap:3px;}.content-wrap{padding-bottom:100px!important;}}
+
+
+/* RedResponse visual system: cohesive accents, stable grid alignment, and a true single loading state. */
+:root{
+  --rr-accent:#d92d20;
+  --rr-accent-soft:#fff0ee;
+  --rr-navy:#111e32;
+  --rr-navy-soft:#eaf0f7;
+  --rr-teal:#21836f;
+  --rr-teal-soft:#eaf6f2;
+  --rr-warning:#b97826;
+  --rr-warning-soft:#fbf3e7;
+}
+.rr-fullscreen-loading{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;background:#f5f7fa;min-height:100dvh;width:100vw}
+.rr-fullscreen-loading .rr-spin{width:36px;height:36px;border-width:3px;border-color:#dfe5ed;border-top-color:var(--rr-accent)}
+.rr-workspace-loading{display:none!important}
+/* Grid children stretch evenly; cards must not force their neighbours to misalign. */
+.dashboard-grid,.lower-grid,.incidents-layout,.dispatch-board-grid,.dispatch-summary,.metric-grid,.unit-grid,.coordination-grid,.department-cards,.generic-card-grid,.map-page-layout,.map-side-list{align-items:stretch}
+.dashboard-grid>*,.lower-grid>*,.incidents-layout>*,.dispatch-board-grid>*,.dispatch-summary>*,.metric-grid>*,.unit-grid>*,.coordination-grid>*,.department-cards>*,.generic-card-grid>*,.map-page-layout>*,.map-side-list>*{min-width:0;min-height:0}
+.dashboard-grid>.panel,.lower-grid>.panel,.dispatch-board-grid>.panel,.map-side-list>.panel{height:100%;min-width:0}
+.dispatch-board-grid{grid-auto-rows:minmax(0,1fr);gap:16px}
+.dispatch-board-grid .panel,.dispatch-board-grid .dispatch-lane,.dispatch-board-grid .dispatch-column{display:flex;flex-direction:column;min-width:0}
+.dispatch-board-grid .panel-body,.dispatch-board-grid .dispatch-lane-body,.dispatch-board-grid .dispatch-column-body{flex:1;min-height:0}
+.incidents-layout{grid-template-columns:minmax(0,1fr) minmax(300px,360px);gap:16px}
+.incidents-layout>.panel,.incidents-layout>.incident-detail{align-self:stretch;min-width:0}
+.metric-grid{grid-auto-rows:1fr}
+.metric-card{height:100%;min-width:0}
+/* Keep the palette intentional: red for primary response actions, navy for structure, teal for positive states. */
+.timeline-marker.purple{background:#6b7f9b!important}
+.generic-card-icon{background:var(--rr-navy-soft)!important;color:#355577!important}
+.notifications-intro-icon,.notifications-empty-icon,.generic-hero-icon{background:var(--rr-accent-soft)!important;color:var(--rr-accent)!important}
+.status-pill.success,.status-pill.available,.status-pill.resolved,.status-pill.closed,.unit-status.available{background:var(--rr-teal-soft)!important;color:var(--rr-teal)!important;border-color:#cfe8df!important}
+.metric-trend.positive,.trend-positive{background:var(--rr-teal-soft)!important;color:var(--rr-teal)!important}
+.priority.low{background:#edf1f5!important;color:#526277!important}
+.priority.medium{background:var(--rr-warning-soft)!important;color:#94601e!important}
+@media(max-width:1000px){.incidents-layout{grid-template-columns:minmax(0,1fr)}.dispatch-board-grid{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:auto}}
+@media(max-width:760px){.dispatch-board-grid{grid-template-columns:minmax(0,1fr)}.incidents-layout{grid-template-columns:minmax(0,1fr)}.dispatch-summary{grid-template-columns:repeat(2,minmax(0,1fr))}}
