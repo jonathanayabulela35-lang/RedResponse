@@ -12,7 +12,3 @@
 .access-code-row{display:flex;align-items:center;gap:10px;border:1px solid #dfe5ec;background:#f8fafc;border-radius:8px;padding:10px}
 .access-code-row code{font-size:18px;letter-spacing:2px;font-weight:800;color:#18385d;flex:1;overflow-wrap:anywhere}
 .access-code-row .btn{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
-
-/* Logo sizing: the source PNG is 2000x2000, so it must be constrained */
-.brand-mark{overflow:hidden;flex-shrink:0;padding:0}
-.brand-logo-image{display:block;width:100%;height:100%;object-fit:cover;border-radius:inherit}
