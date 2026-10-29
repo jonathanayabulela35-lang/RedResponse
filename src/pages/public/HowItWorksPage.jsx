@@ -2,7 +2,7 @@ import React from 'react';
 import { ArrowRight, ClipboardList, RadioTower, Truck, History, Share2, CheckCircle2 } from 'lucide-react';
 
 const steps = [
-  { n:'01', icon:ClipboardList, title:'Capture the incident', body:'An authorised operator records the incident type, priority, description and a confirmed location. The incident record becomes the shared reference point for that organisation.' },
+  { n:'01', icon:ClipboardList, title:'Capture the incident', body:'An authorised operator records the incident type, description and a confirmed location. The incident record becomes the shared reference point for that organisation.' },
   { n:'02', icon:Truck, title:'Assign a response unit', body:'Dispatch staff review available units and create an assignment linked to the incident. The workspace reflects the assignment and its recorded status.' },
   { n:'03', icon:RadioTower, title:'Follow operational updates', body:'Incident and unit status changes help authorised staff follow the response as information is updated. Reliable field notifications and acknowledgement workflows require deployment-specific integration.' },
   { n:'04', icon:Share2, title:'Request cross-service support', body:'When another service is needed, an organisation can request assistance. Incident details should only become visible to the receiving organisation after the appropriate approval flow is implemented.' },
