@@ -1,17 +1,126 @@
-import React, { useState } from 'react';
-import { IconBadge } from '../ui/IconBadge.jsx';
-import { StatusPill } from '../ui/StatusPill.jsx';
-import { PriorityBadge as Priority } from '../ui/PriorityBadge.jsx';
-import { MetricCard as Metric } from '../ui/MetricCard.jsx';
-import { Activity, Ambulance, AlertTriangle, ArrowDownRight, ArrowUpRight, Bell, Check, CheckCheck, ChevronDown, ChevronRight, Clock3, Crosshair, Flame, Gauge, Globe2, Headphones, Layers, LocateFixed, LogOut, Map as MapIcon, MapPin, Menu, MoreHorizontal, Navigation, Plus, Radio, Search, Send, Settings, Shield, ShieldAlert, ShieldCheck, Siren, SlidersHorizontal, Smartphone, Users, X, CarFront, Building2, CalendarClock, CircleHelp, FileText, Filter, HeartPulse, Home, Info, LockKeyhole, MapPinned, MessageSquareWarning, PackageCheck, RadioTower, RefreshCw, Route, UserRound, Wifi, Zap } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Copy, KeyRound, LockKeyhole, RefreshCw, ShieldCheck, X } from 'lucide-react';
+import { isSupabaseConfigured, supabase } from '../../lib/supabase.js';
 
-function ActivityItem({color,icon:Icon,title,detail,time}){return <div className="activity-item"><div className={`activity-icon ${color}`}><Icon size={15}/></div><div className="activity-copy"><strong>{title}</strong><span>{detail}</span></div><time>{time}</time></div>}
-function TimelineItem({time,title,detail,color}){return <div className="timeline-item"><div className={`timeline-marker ${color}`}/><div className="timeline-copy"><time>{time}</time><strong>{title}</strong><span>{detail}</span></div></div>}
-function MaximizeIcon(){return <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M8 3H5a2 2 0 0 0-2 2v3M16 3h3a2 2 0 0 1 2 2v3M21 16v3a2 2 0 0 1-2 2h-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>}
-function CheckCircleIcon(){return <span className="toast-check"><Check size={15}/></span>}
-function OperationsMap({incidents,units,large=false,onSelect}){return <div className={`ops-map ${large?'large':''}`}><div className="map-grid"/><div className="map-river"/><div className="map-park park-one"/><div className="map-park park-two"/><div className="map-road road-h1"/><div className="map-road road-h2"/><div className="map-road road-h3"/><div className="map-road road-v1"/><div className="map-road road-v2"/><div className="map-road road-v3"/><div className="map-road road-diag"/><span className="map-street st1">JAN SMUTS AVE</span><span className="map-street st2">EMPIRE ROAD</span><span className="map-street st3">DE KORTE ST</span><span className="map-place place1">BRAAMFONTEIN</span><span className="map-place place2">PARKTOWN</span><span className="map-place place3">JOHANNESBURG CBD</span><div className="map-route-line"/><div className="map-pins">{incidents.filter(i=>!['Resolved','Closed'].includes(i.status)).map((i,n)=><button key={i.id} className={`map-pin incident-pin ${i.priority==='Critical'?'critical':''}`} style={{left:`${[46,34,65,55,72][n%5]}%`,top:`${[42,61,29,72,50][n%5]}%`}} title={`${i.id} · ${i.type}`} onClick={()=>onSelect?.(i.id)}><span><IconBadge category={i.category} size={12}/></span></button>)}</div><div className="map-units">{units.map((u,n)=><div key={u.id} className={`unit-map-dot ${u.dept==='Medical Services'?'medical':u.dept==='Police'?'police':u.dept==='Fire & Rescue'?'fire':'road'} ${u.status==='Available'||u.status==='At station'?'available':''}`} style={{left:`${[23,51,39,72,61,77,29,18][n%8]}%`,top:`${[32,49,68,40,22,64,81,53][n%8]}%`}} title={`${u.id} · ${u.status}`}>{u.dept==='Medical Services'?<HeartPulse size={11}/>:u.dept==='Police'?<Shield size={11}/>:u.dept==='Fire & Rescue'?<Flame size={11}/>:<CarFront size={11}/>}</div>)}</div><div className="map-scale"><span/> 500 m</div><div className="map-attribution">Illustrative map · not live geospatial data</div><div className="map-controls"><button onClick={()=>{}}><Plus size={16}/></button><button onClick={()=>{}}><span className="minus-symbol">−</span></button><button onClick={()=>{}}><LocateFixed size={15}/></button></div></div>}
-function IncidentDetail({incident,units,onDispatch,onStatus,onCross,onNotify}){const [tab,setTab]=useState('Details');if(!incident?.dbId)return <aside className="panel incident-detail"><div className="empty-state"><Siren size={24}/><strong>No incident selected</strong><span>Select a saved incident to inspect its details and dispatch options.</span></div></aside>;return <aside className="panel incident-detail"><div className="detail-top"><span className="detail-kicker">INCIDENT DETAILS</span><button className="icon-button subtle" onClick={()=>onNotify('Incident actions opened')}><MoreHorizontal size={18}/></button></div><div className="detail-id">{incident.id}<span className="detail-dot"/>Created {incident.time}</div><div className="detail-title"><IconBadge category={incident.category} size={19}/><h2>{incident.type}</h2></div><div className="detail-badges"><Priority value={incident.priority}/><StatusPill status={incident.status}/></div><div className="detail-tabs">{['Details','Units','Timeline'].map(t=><button key={t} className={tab===t?'active':''} onClick={()=>setTab(t)}>{t}</button>)}</div>{tab==='Details'&&<div className="detail-section"><div className="detail-field"><span>INCIDENT LOCATION</span><div><MapPin size={15}/><strong>{incident.address}</strong></div><small>{incident.area}</small><button className="text-button" onClick={()=>onNotify('Coordinates are unavailable until a validated location source is connected')}>View coordinates <ArrowUpRight size={13}/></button></div><div className="detail-field"><span>DESCRIPTION</span><p>{incident.detail}</p></div><div className="detail-field"><span>INTAKE SOURCE</span><div><Headphones size={15}/>{incident.source}</div></div><div className="detail-field"><span>SHARING</span><div><ShieldCheck size={15}/>{incident.shared?'Shared with authorized departments':'Department only'}</div></div></div>}{tab==='Units'&&<div className="detail-section">{incident.units.length?incident.units.map(id=>{const u=units.find(x=>x.id===id);return <div className="detail-unit" key={id}><div className="unit-avatar"><Navigation size={15}/></div><div><strong>{id}</strong><span>{u?.name||'Response unit'}</span></div><StatusPill status={u?.status||'Assigned'}/></div>}):<div className="empty-assignment">No units assigned to this incident.</div>}<button className="btn btn-secondary full-btn" onClick={onDispatch}><Plus size={15}/> Assign a unit</button></div>}{tab==='Timeline'&&<div className="detail-section"><TimelineItem time={incident.time} title="Incident created" detail="Recorded by dispatch operator." color="red"/><TimelineItem time="21:18:02" title="Status updated" detail={`Current status: ${incident.status}.`} color="blue"/></div>}<div className="detail-actions"><button className="btn btn-primary full-btn" onClick={onDispatch}><Send size={15}/> Dispatch unit</button><button className="btn btn-secondary full-btn" onClick={onCross}><Layers size={15}/> Request assistance</button><div className="status-action-row"><button onClick={()=>onStatus('En route')}><Navigation size={14}/> En route</button><button onClick={()=>onStatus('Resolved')}><CheckCheck size={14}/> Resolve</button></div></div></aside>}
-function GenericPage({icon:Icon,eyebrow,title,subtitle,cards,onAction}){return <><div className="page-heading"><div><div className="eyebrow">{eyebrow}</div><h1>{title}</h1><p>{subtitle}</p></div><button className="btn btn-primary" onClick={onAction}><Settings size={16}/> Configure</button></div><div className="generic-hero"><div className="generic-hero-icon"><Icon size={25}/></div><div><h2>{title} workspace</h2><p>This area is designed for controlled operational management, with department permissions and a recorded history of relevant actions.</p></div></div><div className="generic-card-grid">{cards.map(([name,desc])=><div className="panel generic-card" key={name}><div className="generic-card-icon"><Icon size={19}/></div><h3>{name}</h3><p>{desc}</p><button className="text-button" onClick={onAction}>Open settings <ChevronRight size={14}/></button></div>)}</div><div className="form-note wide-note"><Info size={16}/> This prototype demonstrates the interface and navigation. Production authentication, persistent records, exports and configuration services must be connected before operational use.</div></>}
+export default function ResponseAccessManager({ onClose, notify }) {
+  const [session, setSession] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [busy, setBusy] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [orgs, setOrgs] = useState([]);
+  const [organizationId, setOrganizationId] = useState('');
+  const [unitMode, setUnitMode] = useState('new');
+  const [existingUnits, setExistingUnits] = useState([]);
+  const [selectedUnitId, setSelectedUnitId] = useState('');
+  const [unitCode, setUnitCode] = useState('');
+  const [unitName, setUnitName] = useState('');
+  const [unitType, setUnitType] = useState('medical');
+  const [crewEmail, setCrewEmail] = useState('');
+  const [crewName, setCrewName] = useState('');
+  const [expires, setExpires] = useState('24');
+  const [generated, setGenerated] = useState(null);
+  const [error, setError] = useState('');
 
+  useEffect(() => {
+    if (!supabase) { setLoading(false); return; }
+    let active = true;
+    supabase.auth.getSession().then(({ data }) => { if (active) { setSession(data.session); setLoading(false); } });
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, next) => { if (active) setSession(next); });
+    return () => { active = false; listener.subscription.unsubscribe(); };
+  }, []);
 
-export { IconBadge, StatusPill, Priority, Metric, ActivityItem, TimelineItem, MaximizeIcon, CheckCircleIcon, OperationsMap, IncidentDetail, GenericPage };
+  useEffect(() => {
+    if (!session?.user || !supabase) return;
+    (async () => {
+      setLoading(true); setError('');
+      const { data, error: queryError } = await supabase.from('organization_memberships')
+        .select('organization_id, role, organizations(id, name)')
+        .eq('user_id', session.user.id).eq('is_active', true);
+      if (queryError) setError(queryError.message);
+      const allowed = (data || []).filter(row => ['department_admin', 'dispatcher', 'supervisor', 'platform_admin'].includes(row.role));
+      setOrgs(allowed);
+      if (allowed.length === 1) setOrganizationId(allowed[0].organization_id);
+      setLoading(false);
+    })();
+  }, [session?.user?.id]);
+
+  useEffect(() => {
+    if (!session?.user || !organizationId || !supabase) { setExistingUnits([]); setSelectedUnitId(''); return; }
+    let active = true;
+    supabase.from('response_units').select('id, unit_code, name, unit_type').eq('organization_id', organizationId).eq('is_active', true).order('unit_code')
+      .then(({ data, error: queryError }) => {
+        if (!active) return;
+        if (queryError) setError(queryError.message);
+        const rows = data || [];
+        setExistingUnits(rows);
+        setSelectedUnitId(rows[0]?.id || '');
+      });
+    return () => { active = false; };
+  }, [session?.user?.id, organizationId]);
+
+  async function signIn(e) {
+    e.preventDefault(); setBusy(true); setError('');
+    const { error: signInError } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
+    if (signInError) setError(signInError.message);
+    setBusy(false);
+  }
+
+  async function createAccess(e) {
+    e.preventDefault(); setBusy(true); setError(''); setGenerated(null);
+    const { data, error: rpcError } = unitMode === 'existing'
+      ? await supabase.rpc('create_response_member_invite_for_unit', {
+          p_organization_id: organizationId,
+          p_unit_id: selectedUnitId,
+          p_invited_email: crewEmail.trim().toLowerCase(),
+          p_display_name: crewName.trim() || null,
+          p_expires_in_hours: Number(expires)
+        })
+      : await supabase.rpc('create_response_unit_invite', {
+          p_organization_id: organizationId,
+          p_unit_code: unitCode.trim().toUpperCase(),
+          p_name: unitName.trim(),
+          p_unit_type: unitType,
+          p_invited_email: crewEmail.trim().toLowerCase(),
+          p_display_name: crewName.trim() || null,
+          p_expires_in_hours: Number(expires)
+        });
+    if (rpcError) setError(rpcError.message);
+    else {
+      const row = Array.isArray(data) ? data[0] : data;
+      setGenerated(row);
+      notify?.('Response unit and activation code created. Copy the code now; it is only shown once.');
+      if (unitMode === 'new') { setUnitCode(''); setUnitName(''); } setCrewEmail(''); setCrewName('');
+    }
+    setBusy(false);
+  }
+
+  async function copyCode() {
+    if (!generated?.activation_code) return;
+    try { await navigator.clipboard.writeText(generated.activation_code); notify?.('Activation code copied.'); }
+    catch { setError('Clipboard access was blocked. Select and copy the code manually.'); }
+  }
+
+  return <div className="modal-backdrop" onMouseDown={e => { if (e.target === e.currentTarget) onClose(); }}>
+    <section className="modal dispatch-modal" role="dialog" aria-modal="true" aria-labelledby="crew-access-title">
+      <div className="modal-header"><div><span className="modal-kicker">RESPONSE TEAM ACCESS</span><h2 id="crew-access-title">Create crew access</h2><p>Create a registered unit and issue a one-time activation code to a named crew member.</p></div><button className="icon-button" onClick={onClose} aria-label="Close"><X size={18}/></button></div>
+      {!isSupabaseConfigured ? <div className="form-note"><LockKeyhole size={15}/> The dispatch website needs VITE_SUPABASE_URL and VITE_SUPABASE_KEY in its environment before this feature can connect to your shared project.</div>
+      : loading ? <div className="empty-state"><RefreshCw size={20}/><span>Checking dispatch access…</span></div>
+      : !session ? <form onSubmit={signIn}><div className="form-note"><ShieldCheck size={15}/> Sign in with an existing authorised RedResponse dispatch account. Access is checked by Supabase; this form does not create dispatcher accounts.</div><label>Dispatch work email<input type="email" required autoComplete="username" value={email} onChange={e=>setEmail(e.target.value)} placeholder="dispatcher@organisation.co.za"/></label><label>Password<input type="password" required autoComplete="current-password" value={password} onChange={e=>setPassword(e.target.value)}/></label>{error && <p className="access-error">{error}</p>}<div className="modal-actions"><button className="btn btn-secondary" type="button" onClick={onClose}>Cancel</button><button className="btn btn-primary" disabled={busy}>{busy ? 'Signing in…' : 'Sign in'}</button></div></form>
+      : orgs.length === 0 ? <div className="form-note"><LockKeyhole size={15}/> This account has no active organisation membership with a dispatch, supervisor or administrator role. Ask your platform administrator to grant the appropriate access.{error ? ` ${error}` : ''}</div>
+      : <>
+        {generated ? <><div className="dispatch-destination"><KeyRound size={18}/><div><strong>Unit {generated.unit_code} · {generated.unit_name}</strong><span>Invite for {generated.invited_email} · expires {new Date(generated.expires_at).toLocaleString()}</span></div></div><label>One-time activation code<div className="access-code-row"><code>{generated.activation_code}</code><button className="btn btn-secondary btn-small" onClick={copyCode} type="button"><Copy size={14}/> Copy code</button></div></label><div className="form-note"><ShieldCheck size={15}/> Share this code only with the named crew member. It is bound to their email address, expires automatically and can only be redeemed once. The full code is not stored in readable form, so close this window only after copying it.</div><div className="modal-actions"><button className="btn btn-secondary" onClick={() => setGenerated(null)} type="button">Create another</button><button className="btn btn-primary" onClick={onClose} type="button">Done</button></div></>
+        : <form onSubmit={createAccess}>
+          <label>Organisation<select required value={organizationId} onChange={e=>setOrganizationId(e.target.value)}><option value="">Select organisation</option>{orgs.map(row=><option key={row.organization_id} value={row.organization_id}>{row.organizations?.name || row.organization_id}</option>)}</select></label>
+          <label>Unit setup<select value={unitMode} onChange={e=>setUnitMode(e.target.value)}><option value="new">Register a new response unit</option><option value="existing">Add a crew member to an existing unit</option></select></label>
+          {unitMode === 'existing' ? <label>Existing response unit<select required value={selectedUnitId} onChange={e=>setSelectedUnitId(e.target.value)}><option value="">Select an active unit</option>{existingUnits.map(unit=><option key={unit.id} value={unit.id}>{unit.unit_code} · {unit.name}</option>)}</select>{existingUnits.length === 0 && <span className="unit-id">No active units were found for this organisation.</span>}</label> : <><div className="form-two"><label>Unit code<input required value={unitCode} onChange={e=>setUnitCode(e.target.value)} placeholder="MED-04" autoCapitalize="characters"/></label><label>Unit type<select value={unitType} onChange={e=>setUnitType(e.target.value)}><option value="medical">Medical / Ambulance</option><option value="fire_rescue">Fire & Rescue</option><option value="police">Police</option><option value="road_response">Road Response</option><option value="other">Other response</option></select></label></div><label>Unit display name<input required value={unitName} onChange={e=>setUnitName(e.target.value)} placeholder="Ambulance Unit 04"/></label></>}
+          <div className="form-two"><label>Crew member name<input value={crewName} onChange={e=>setCrewName(e.target.value)} placeholder="Full name"/></label><label>Crew member email<input type="email" required value={crewEmail} onChange={e=>setCrewEmail(e.target.value)} placeholder="crew@organisation.co.za"/></label></div>
+          <label>Code validity<select value={expires} onChange={e=>setExpires(e.target.value)}><option value="1">1 hour</option><option value="24">24 hours</option><option value="72">3 days</option><option value="168">7 days</option></select></label>
+          {error && <p className="access-error">{error}</p>}
+          <div className="form-note"><LockKeyhole size={15}/> A new unit and a one-time email-bound invite will be created in the shared Supabase project. The crew member uses the code to activate their own authenticated account. Existing units and incidents are not changed.</div>
+          <div className="modal-actions"><button className="btn btn-secondary" type="button" onClick={onClose}>Cancel</button><button className="btn btn-primary" disabled={busy || !organizationId || (unitMode === 'existing' && !selectedUnitId)}>{busy ? 'Creating…' : (unitMode === 'existing' ? 'Issue crew activation code' : 'Create unit and access code')}</button></div>
+        </form>}
+      </>}
+    </section>
+  </div>;
+}
