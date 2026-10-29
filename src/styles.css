@@ -70,3 +70,29 @@
 @media(max-width:1000px){.rr-live-map-layout{grid-template-columns:minmax(0,1fr)}.rr-live-map-side{min-height:0}.rr-live-incident-list{max-height:420px}.rr-live-map-canvas{height:clamp(360px,55vh,600px);min-height:340px}}
 @media(max-width:760px){.sidebar{padding:16px 12px 12px}.brand{padding-bottom:16px}.sidebar-bottom{padding-top:9px}.rr-live-map-layout{gap:12px}.rr-live-map-toolbar{align-items:flex-start;flex-direction:column;gap:8px;padding:12px}.rr-live-map-meta{text-align:left}.rr-live-map-canvas{height:52vh;min-height:320px;max-height:520px}.rr-live-map-footer{padding:10px 12px}.rr-live-map-actions{width:100%;justify-content:stretch}.rr-live-map-actions .btn{flex:1;white-space:normal;padding:9px 8px;font-size:12px}.rr-live-incident-list{max-height:360px}.rr-map-create-modal{max-height:calc(100dvh - 24px)}.rr-map-create-modal .form-two{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
 @media(max-width:420px){.rr-live-map-canvas{height:48vh;min-height:290px}.rr-live-map-footer{font-size:10px}.rr-live-map-actions{flex-direction:column}.rr-live-map-actions .btn{width:100%;flex:auto}.rr-map-create-modal .form-two{grid-template-columns:minmax(0,1fr)}}
+
+/* Notifications page layout protection: scoped styles only, preserving the global font-size hierarchy. */
+.notifications-page{width:100%;max-width:100%;min-width:0;overflow-wrap:anywhere}
+.notifications-page,.notifications-page *{box-sizing:border-box}
+.notifications-page .page-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;min-width:0;margin-bottom:20px}
+.notifications-page .page-heading>div{min-width:0;max-width:100%}
+.notifications-page .page-heading h1{margin:4px 0 7px;line-height:1.2;overflow-wrap:anywhere}
+.notifications-page .page-heading p{max-width:720px;margin:0;line-height:1.6}
+.notifications-intro{display:flex;align-items:flex-start;gap:14px;min-width:0;padding:18px;margin-bottom:18px;background:#fff;border:1px solid #e5e9ef;border-radius:10px}
+.notifications-intro-icon,.notifications-empty-icon{display:grid;place-items:center;flex:0 0 42px;width:42px;height:42px;border-radius:10px;background:#fff0ee;color:#d92d20}
+.notifications-intro>div:last-child{flex:1;min-width:0}
+.notifications-intro h2{margin:1px 0 7px;font-size:18px;line-height:1.35;color:#243248;overflow-wrap:anywhere}
+.notifications-intro p{margin:0;max-width:850px;font-size:14px;line-height:1.65;color:#78869a;overflow-wrap:anywhere}
+.notifications-panel{min-width:0;overflow:hidden}
+.notifications-panel .panel-header{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;min-width:0;flex-wrap:wrap}
+.notifications-panel .panel-header>div{min-width:0;flex:1 1 220px}
+.notifications-panel .panel-header h2{margin:0 0 5px;line-height:1.35;font-size:18px;overflow-wrap:anywhere}
+.notifications-panel .panel-header p{margin:0;line-height:1.5;overflow-wrap:anywhere}
+.notification-status{display:inline-flex;align-items:center;max-width:100%;padding:6px 9px;border:1px solid #f1dfb5;border-radius:6px;background:#fff9eb;color:#96651b;font-size:12px;line-height:1.4;white-space:normal;overflow-wrap:anywhere}
+.notifications-empty{min-width:0;gap:10px;padding:44px 24px;text-align:center}
+.notifications-empty-icon{flex-basis:44px;width:44px;height:44px;margin-bottom:2px}
+.notifications-empty strong{font-size:16px;line-height:1.4;color:#344257}
+.notifications-empty span{display:block;width:100%;max-width:520px;font-size:14px;line-height:1.65;color:#8290a2;overflow-wrap:anywhere}
+.notifications-next{display:flex;align-items:flex-start;gap:9px;min-width:0;margin-top:16px;padding:13px 15px;border:1px solid #dce5f4;border-radius:9px;background:#f5f8fd;color:#687b98;font-size:13px;line-height:1.6;overflow-wrap:anywhere}
+.notifications-next svg{flex:0 0 auto;margin-top:2px;color:#5275ad}
+@media(max-width:640px){.notifications-page .page-heading{margin-bottom:16px}.notifications-intro{gap:11px;padding:14px}.notifications-intro-icon{flex-basis:36px;width:36px;height:36px}.notifications-intro h2{font-size:16px}.notifications-intro p{font-size:13px}.notifications-panel .panel-header{align-items:stretch}.notification-status{align-self:flex-start}.notifications-empty{padding:32px 16px}.notifications-empty span{font-size:13px}.notifications-next{padding:11px 12px;font-size:12px}}
