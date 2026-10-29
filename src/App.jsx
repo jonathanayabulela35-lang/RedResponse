@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { Activity, Ambulance, AlertTriangle, ArrowDownRight, ArrowUpRight, Bell, Check, CheckCheck, ChevronDown, ChevronRight, Clock3, Crosshair, Flame, Gauge, Globe2, Headphones, Layers, LocateFixed, LogOut, Map as MapIcon, MapPin, Menu, MoreHorizontal, Navigation, Plus, Radio, Search, Send, Settings, Shield, ShieldAlert, ShieldCheck, Siren, SlidersHorizontal, Smartphone, Users, X, CarFront, Building2, CalendarClock, CircleHelp, FileText, Filter, HeartPulse, Home, Info, LockKeyhole, MapPinned, MessageSquareWarning, PackageCheck, RadioTower, RefreshCw, Route, UserRound, Wifi, Zap } from 'lucide-react';
+import { Activity, Ambulance, AlertTriangle, ArrowDownRight, ArrowUpRight, Bell, Check, CheckCheck, ChevronRight, Clock3, Crosshair, Flame, Gauge, Globe2, Headphones, Layers, LocateFixed, LogOut, Map as MapIcon, MapPin, Menu, MoreHorizontal, Navigation, Plus, Radio, Search, Send, Settings, Shield, ShieldAlert, ShieldCheck, Siren, SlidersHorizontal, Smartphone, Users, X, CarFront, CalendarClock, CircleHelp, FileText, Filter, HeartPulse, Home, Info, LockKeyhole, MapPinned, MessageSquareWarning, PackageCheck, RadioTower, RefreshCw, Route, UserRound, Zap } from 'lucide-react';
 import { departments, navGroups } from './lib/demoData.js';
 import { pageRegistry, FallbackPage } from './pages/index.js';
 import { IconBadge, StatusPill, Priority, Metric, ActivityItem, TimelineItem, MaximizeIcon, CheckCircleIcon, OperationsMap, IncidentDetail, GenericPage } from './components/operations/OperationalComponents.jsx';
@@ -29,9 +29,8 @@ function OperationsWorkspace({ organization, onSignOut }){
  return <div className="app-shell">
   <aside className={`sidebar ${mobileNav?'open':''}`}>
    <AppBrand onClose={() => setMobileNav(false)} />
-   <div className="workspace"><div className="workspace-icon"><Building2 size={17}/></div><div className="workspace-copy"><strong>{organization.name}</strong><span>{orgLabel} workspace</span></div><ChevronDown size={15}/></div>
    <div className="sidebar-nav">{navGroups.filter(g=>g.label!=='COORDINATION').map(g=><div className="nav-group" key={g.label}><div className="nav-label">{g.label}</div>{g.items.filter(([label])=>organization.role==='platform_admin'||!['Departments','Cross-department'].includes(label)).map(([label,Icon])=><button key={label} className={`nav-item ${navPage===label?'active':''}`} onClick={()=>go(label)}><Icon size={18}/><span>{label}</span>{label==='Live incidents'&&<b className="nav-count">{scopedIncidents.filter(i=>!['Resolved','Closed'].includes(i.status)).length}</b>}{label==='Cross-department'&&<span className="nav-dot"/>}</button>)}</div>)}</div>
-   <div className="sidebar-bottom"><div className="system-status"><span className="pulse-dot"/><div><strong>Connected workspace</strong><span>Authenticated session</span></div><Wifi size={16}/></div><div className="profile"><div className="avatar">JD</div><div className="profile-copy"><strong>{organization.email||'Account'}</strong><span>{String(organization.role||'member').replace(/_/g,' ')}</span></div><MoreHorizontal size={19}/></div></div>
+   <div className="sidebar-bottom"><div className="profile"><div className="avatar">JD</div><div className="profile-copy"><strong>{organization.email||'Account'}</strong><span>{String(organization.role||'member').replace(/_/g,' ')}</span></div><MoreHorizontal size={19}/></div></div>
   </aside>
   {mobileNav&&<div className="scrim" onClick={()=>setMobileNav(false)}/>}
   <main className="main-area">
