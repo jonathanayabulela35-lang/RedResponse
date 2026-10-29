@@ -163,7 +163,7 @@ export default function LiveMapPage({ incidents = [], units = [], setSelected, g
         address_text: fullAddress,
         description: details.trim(),
         intake_source: 'operator_entered',
-        location_source: 'address_geocoded',
+        location_source: 'operator_entered',
         location: `SRID=4326;POINT(${destination.lon} ${destination.lat})`,
         location_confirmed: false
       }).select('*').single();
