@@ -74,3 +74,49 @@
 
 /* Incident priority indicators are intentionally not shown in the UI. */
 .priority, .priority-badge, .priority-indicator, .priority-legend { display: none !important; }
+
+/* Workspace page rhythm and persistent footer alignment */
+.main-area {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content-wrap {
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
+  width: 100%;
+  min-height: 0;
+}
+
+.content-wrap > .app-footer {
+  margin-top: auto;
+  padding-top: 24px;
+}
+
+.dashboard-grid,
+.lower-grid {
+  align-items: stretch;
+  column-gap: 18px;
+  row-gap: 18px;
+}
+
+.dashboard-grid > .panel,
+.lower-grid > .panel {
+  min-width: 0;
+  height: 100%;
+}
+
+@media (max-width: 1000px) {
+  .dashboard-grid,
+  .lower-grid {
+    row-gap: 16px;
+  }
+}
+
+@media (max-width: 760px) {
+  .content-wrap > .app-footer {
+    padding-top: 20px;
+  }
+}
