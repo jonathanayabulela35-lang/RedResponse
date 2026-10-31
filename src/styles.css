@@ -12,3 +12,75 @@
 .access-code-row{display:flex;align-items:center;gap:10px;border:1px solid #dfe5ec;background:#f8fafc;border-radius:8px;padding:10px}
 .access-code-row code{font-size:18px;letter-spacing:2px;font-weight:800;color:#18385d;flex:1;overflow-wrap:anywhere}
 .access-code-row .btn{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+
+/* Workspace layout safeguards: keep navigation, page content and footer in their own lanes. */
+.app-shell{min-height:100vh}
+.sidebar{height:100vh;min-height:0}
+.sidebar-nav{flex:1 1 auto;min-height:0;overscroll-behavior:contain}
+.sidebar-bottom{flex:0 0 auto;margin-top:auto;padding-top:13px;padding-bottom:2px;background:var(--navy)}
+.main-area{display:flex;flex-direction:column;min-height:100vh;min-width:0}
+.content-wrap{display:flex;flex:1 0 auto;flex-direction:column;width:100%;min-width:0}
+.content-wrap>.app-footer{margin-top:auto;padding-top:28px;padding-bottom:8px}
+.app-footer{width:100%;border-top:1px solid #e8ecf1;color:#8b96a6;font-size:9px;line-height:1.5}
+.app-footer>span{min-width:0}
+.dashboard-grid,.lower-grid{grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);column-gap:16px;row-gap:16px;align-items:stretch}
+.dashboard-grid>.panel,.lower-grid>.panel{min-width:0;height:100%}
+.incident-panel,.map-panel,.department-panel,.activity-panel{min-width:0}
+
+/* Notifications page: deliberate hierarchy and balanced use of available space. */
+.notifications-page{width:100%;min-width:0}
+.notifications-page .page-heading{margin-bottom:22px}
+.notifications-intro{display:flex;align-items:flex-start;gap:16px;padding:22px 24px;margin-bottom:18px;background:linear-gradient(115deg,#fff 0%,#fff8f7 100%);border:1px solid #f0dfdd;border-radius:12px}
+.notifications-intro-icon{width:46px;height:46px;display:grid;place-items:center;flex:0 0 46px;border-radius:12px;background:#fff0ee;color:#d92d20}
+.notifications-intro>div:last-child{min-width:0}
+.notifications-intro h2{margin:1px 0 7px;font:700 15px Manrope,sans-serif;color:#253348}
+.notifications-intro p{max-width:850px;margin:0;color:#778498;font-size:11px;line-height:1.75}
+.notifications-panel{overflow:hidden;min-height:330px}
+.notifications-panel .panel-header{min-height:76px;align-items:center}
+.notification-status{display:inline-flex;align-items:center;gap:7px;padding:7px 10px;border:1px solid #e7ebf0;border-radius:7px;background:#f8fafc;color:#78869a;font-size:9px;font-weight:600;white-space:nowrap}
+.notification-status:before{content:'';width:6px;height:6px;border-radius:50%;background:#d99a36;flex:0 0 6px}
+.notifications-empty{min-height:245px;padding:36px 24px}
+.notifications-empty-icon{width:48px;height:48px;display:grid;place-items:center;border-radius:50%;background:#f2f5f9;color:#8795a8;margin-bottom:3px}
+.notifications-empty strong{font-size:13px;color:#3d4b60}
+.notifications-empty span{max-width:470px;text-align:center;font-size:10px;line-height:1.7;color:#8995a5}
+.notifications-next{display:flex;align-items:flex-start;gap:10px;margin-top:16px;padding:13px 15px;border:1px solid #e5ebf4;border-radius:9px;background:#f8fafd;color:#718198;font-size:10px;line-height:1.65}
+.notifications-next svg{flex:0 0 auto;color:#6d88b4;margin-top:1px}
+
+/* Live map: protect Leaflet's measured canvas and keep its incident rail usable. */
+.rr-live-map-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(285px,340px);gap:16px;align-items:stretch;min-width:0}
+.rr-live-map-panel,.rr-live-map-side{min-width:0;min-height:0;overflow:hidden}
+.rr-live-map-canvas{display:block;width:100%;height:clamp(430px,62vh,720px);min-height:360px;position:relative;z-index:0;background:#edf1ed;isolation:isolate}
+.rr-live-map-canvas .leaflet-container{width:100%;height:100%;font:inherit}
+.rr-live-map-toolbar,.rr-live-map-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:13px 16px}
+.rr-live-map-footer{border-top:1px solid #edf0f4;color:#8491a2;font-size:9px;line-height:1.5}
+.rr-live-map-side{display:flex;flex-direction:column;max-height:clamp(520px,70vh,780px)}
+.rr-live-incident-list{min-height:0;overflow:auto;overscroll-behavior:contain}
+.rr-live-map-side-note{display:flex;align-items:flex-start;gap:9px;margin-top:auto;padding:13px 14px;border-top:1px solid #edf0f4;background:#fafbfd;color:#7e8b9d;font-size:9px;line-height:1.65}
+.rr-live-map-side-note svg{flex:0 0 auto;color:#6d88b4}
+.rr-live-map-actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+
+@media(max-width:1000px){
+ .dashboard-grid,.lower-grid{grid-template-columns:minmax(0,1fr);}
+ .rr-live-map-layout{grid-template-columns:minmax(0,1fr)}
+ .rr-live-map-side{max-height:none}
+ .rr-live-incident-list{max-height:430px}
+}
+@media(max-width:760px){
+ .sidebar{height:100dvh;min-height:0;padding-bottom:max(14px,env(safe-area-inset-bottom))}
+ .sidebar-bottom{padding-bottom:env(safe-area-inset-bottom)}
+ .main-area{min-height:100vh;min-height:100dvh}
+ .content-wrap{flex:1 0 auto}
+ .content-wrap>.app-footer{padding-top:20px;padding-bottom:calc(8px + env(safe-area-inset-bottom))}
+ .notifications-intro{padding:16px;gap:12px}
+ .notifications-intro-icon{width:40px;height:40px;flex-basis:40px}
+ .notifications-intro h2{font-size:13px}
+ .notifications-intro p{font-size:10px}
+ .notifications-panel{min-height:300px}
+ .notifications-panel .panel-header{align-items:flex-start;gap:10px;flex-direction:column}
+ .notification-status{white-space:normal}
+ .rr-live-map-canvas{height:55vh;min-height:350px}
+ .rr-live-map-toolbar{align-items:flex-start;flex-direction:column}
+ .rr-live-map-footer{align-items:flex-start;flex-direction:column}
+ .rr-live-map-actions{width:100%}
+ .rr-live-map-actions .btn{flex:1}
+}
